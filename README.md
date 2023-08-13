@@ -1,6 +1,7 @@
 # Welcome page of website in 3D
 
 ## Tools : 
+* VueJs
 * ThreeJs for 3D env
 
 ## Project Setup
