@@ -1,9 +1,7 @@
-# Zombie game
-Make on VueJs to play on browser 
+# Welcome page of website in 3D
 
 ## Tools : 
 * ThreeJs for 3D env
-* AmmoJs for physics part
 
 ## Project Setup
 
