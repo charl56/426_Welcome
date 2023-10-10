@@ -6,7 +6,7 @@ let lights = {
         decay: 2.5,
         position: {                
             x: 9.3,
-            y: 4.5,
+            y: 5.5,
             z: -0.5,
         },
     },
@@ -17,7 +17,7 @@ let lights = {
         decay: 2.5,
         position: {                
             x: 13.5,
-            y: 4.5,
+            y: 5.5,
             z: -3.5,
         },
     },
@@ -39,7 +39,7 @@ let lights = {
         decay: 2.5,
         position: {                
             x: 9,
-            y: 4.5,
+            y: 5.5,
             z: -8.5,
         },
     },
@@ -50,7 +50,7 @@ let lights = {
         decay: 2.5,
         position: {                
             x: 14.5,
-            y: 4.5,
+            y: 5.5,
             z: -8,
         },
     },

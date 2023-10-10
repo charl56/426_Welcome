@@ -1,10 +1,11 @@
 <template>
     <div class="scene" ref="scene" onselectstart="return false" onmousedown="return false">
         <div class="viseur d-flex align-center justify-center">
-            <div>
+            <!-- <div>
                 <v-img class="icon-viseur" :src="viseur"></v-img>
-            </div>
+            </div> -->
         </div>
+        <Display />
     </div>
 </template>
 
@@ -15,10 +16,7 @@
     import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';      // Texture des objets 3D
     import { RGBELoader } from 'three/addons/loaders/RGBELoader.js'     // Image 360
     import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';    // Pour les animation
-    import { STLLoader } from 'three/addons/loaders/STLLoader.js';    // Pour les animation
-
-
-    
+    import { STLLoader } from 'three/addons/loaders/STLLoader.js';    // Pour les animation    
     // Plugins
     import { eventBus } from '../../plugins/eventBus'
     // Ammo
@@ -26,12 +24,14 @@
     // Import datas
     import {sceneItems} from '../../../static/datas/Maps/426_items'
     import {lights} from '../../../static/datas/Maps/426_lights'
-
     import sounds from '../../../static/datas/sounds'
+    // Display
+    import Display from '../Display/Display.vue'
 
 
     export default {
         components: {
+            Display
         },
         created(){
         },
@@ -45,7 +45,7 @@
             // Ecrans de chargement
             let ressourcesLoad, loadingScreen, welcome
             // ThreeJs : graphic
-            let scene, camera, welcomeCamera, welcomeIndex, clock, deltaTime, renderer
+            let scene, camera, welcomeIndex, clock, deltaTime, renderer
             const canvas = this.$refs.scene                 // Canvas affiche le jeu
             //  AmmoJs : physic
             let physicsWorld
@@ -64,7 +64,7 @@
                 ressourcesLoad = false
                 welcomeIndex = 0
                 // ThreeJs : graphic
-                scene = camera = welcomeCamera = clock = deltaTime = null
+                scene = camera = clock = deltaTime = null
                 renderer = new THREE.WebGLRenderer()        // Fonction de rendu
                 //  AmmoJs : physic
                 physicsWorld = null
@@ -108,6 +108,7 @@
                 setupEventHandlers()
                 // Enlève l'ecran de chargement
                 ressourcesLoad = true
+                eventBus.emit("welcome", true)
                 welcome = true
             }
             ////
@@ -154,11 +155,6 @@
                 camera.userData.tag = 'cameraPlayer'
                 // POV, class js
                 fpsControls = new FirstPersonCamera(camera);
-                // Camera for welcome
-                welcomeCamera = new THREE.PerspectiveCamera(75,canvas.clientWidth / canvas.clientHeight,0.1,100);
-                // Position camera
-                welcomeCamera.position.set(4, player.height, 0)
-                welcomeCamera.rotation.set(0, -Math.PI/2, 0)
                 // Init rendu
                 renderer.setSize(canvas.clientWidth, canvas.clientHeight);  // taille
                 renderer.shadowMap.enabled = true               // Active les ombres
@@ -308,25 +304,25 @@
                         await materialItem.preload();
 
                         const materielMesh = await loadOBJ(sceneItem.obj, materialItem);
-                        // Inspecter les positions des vertices
-                        materielMesh.traverse(function (child) {
-                            if (child instanceof THREE.Mesh) {
-                                var geometry = child.geometry;
-                                var positions = geometry.getAttribute('position').array;
+                        // // Inspecter les positions des vertices
+                        // materielMesh.traverse(function (child) {
+                        //     if (child instanceof THREE.Mesh) {
+                        //         var geometry = child.geometry;
+                        //         var positions = geometry.getAttribute('position').array;
 
-                                for (var i = 0; i < positions.length; i += 3) {
-                                    var x = positions[i];
-                                    var y = positions[i + 1];
-                                    var z = positions[i + 2];
+                        //         for (var i = 0; i < positions.length; i += 3) {
+                        //             var x = positions[i];
+                        //             var y = positions[i + 1];
+                        //             var z = positions[i + 2];
 
-                                    if (isNaN(x) || isNaN(y) || isNaN(z)) {
-                                        console.error('NaN value found in position data');
-                                        console.log('Vertex index:', i / 3);
-                                        console.log('Position:', x, y, z);
-                                    }
-                                }
-                            }
-                        });
+                        //             if (isNaN(x) || isNaN(y) || isNaN(z)) {
+                        //                 console.error('NaN value found in position data');
+                        //                 console.log('Vertex index:', i / 3);
+                        //                 console.log('Position:', x, y, z);
+                        //             }
+                        //         }
+                        //     }
+                        // });
                         
                         // Ombre de l'objet
                         materielMesh.receiveShadow = true
@@ -410,6 +406,7 @@
             function keyUse(){
                 if(welcome){
                     if(keyboard[32]){
+                        eventBus.emit("welcome", false)
                         welcome = false
                     }
                 } else {
@@ -429,35 +426,40 @@
 
                 // Ecran de chargement
                 if(!ressourcesLoad){
-                    requestAnimationFrame(renderFrame)
                     // // Mouvement de la box
                     loadingScreen.box.rotation.y += 0.05
+                    
+                    requestAnimationFrame(renderFrame)
                     renderer.render(loadingScreen.scene, loadingScreen.camera)
                     return
-                }
-                else if(welcome){
-                    // Effet haut/bas sur la cam
+
+                } else if(welcome){
+                    camera.position.set(4, player.height, 0)
+                    camera.rotation.set(0, -Math.PI/2, 0)                    
+                    // // Effet haut/bas sur la cam
                     welcomeIndex ++
-                    welcomeCamera.position.y = (Math.sin(welcomeIndex/50)/3)+2                    
+                    camera.position.y = (Math.sin(welcomeIndex/50)/3)+2
                     // Animation
                     requestAnimationFrame(renderFrame)
-                    renderer.render(scene, welcomeCamera);
+                    renderer.render(scene, camera)
+                    return
 
-                } else {
-
-         
-
-                    renderer.render(scene, camera);
-                    requestAnimationFrame(renderFrame);
+                } else {         
                     // On met a jour la position de la hitbox du joueur
                     hitboxPlayer.setFromCenterAndSize(camera.position, new THREE.Vector3(0.8, 2, 0.8))
-                    console.log(parseInt(camera.position.x), parseInt(camera.position.z))
+                    // console.log(parseInt(camera.position.x), parseInt(camera.position.z))
                     //////
                     // POV
                     //////
+                    fpsControls.mouseEventsEnabled = false
                     deltaTime = clock.getDelta()
                     fpsControls.update(deltaTime)
-                };
+                    
+                    renderer.render(scene, camera);
+                    requestAnimationFrame(renderFrame);
+                    return
+
+                }
             }
 
 
@@ -482,10 +484,10 @@
 
                 initialize_() {
                     this.current_ = {
-                    mouseXDelta: 0,
-                    mouseYDelta: 0,
-                    mouseX: 0,
-                    mouseY: 0,
+                        mouseXDelta: 0,
+                        mouseYDelta: 0,
+                        mouseX: 0,
+                        mouseY: 0,
                     };
                     this.previous_ = null;
                     this.keys_ = {};
@@ -496,6 +498,8 @@
                 }
 
                 onMouseMove_(e) {
+                    if (fpsControls.mouseEventsEnabled) return; // Ne réagissez pas aux mouvements de la souris si désactivé
+
                     this.current_.mouseX = e.pageX - window.innerWidth / 2;
                     this.current_.mouseY = e.pageY - window.innerHeight / 2;
 
@@ -532,8 +536,9 @@
             class FirstPersonCamera {
                 constructor(camera) {
                     this.camera_ = camera;
+                    this.mouseEventsEnabled = true; // Activer les événements de la souris par défaut
                     this.input_ = new InputController();
-                    this.rotation_ = new THREE.Quaternion();
+                    this.rotation_ = new THREE.Quaternion(0.3, 0.3, 0.8, 0);
                     this.translation_ = new THREE.Vector3(4, 2, 0);
                     this.phi_ = 0;
                     this.phiSpeed_ = 8;
@@ -555,8 +560,6 @@
                 updateCamera_(_) {
                     this.camera_.quaternion.copy(this.rotation_);
                     this.camera_.position.copy(this.translation_);
-                    console.log(this.rotation_)
-                    let deltaTime = 0.0165
                    
                     const forward = new THREE.Vector3(0, 0, -1);
                     forward.applyQuaternion(this.rotation_);
@@ -567,9 +570,6 @@
                     forward.add(this.translation_);
 
                     let closest = forward;
-                    const result = new THREE.Vector3();
-                    const ray = new THREE.Ray(this.translation_, dir);
-
                     this.camera_.lookAt(closest);
                 }
 
