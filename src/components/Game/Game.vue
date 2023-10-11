@@ -435,8 +435,9 @@
 
                 } else if(welcome){
                     camera.position.set(4, player.height, 0)
-                    camera.rotation.set(0, -Math.PI/2, 0)                    
-                    // // Effet haut/bas sur la cam
+                    camera.rotation.set(0, -Math.PI/2, 0)
+                    //
+                    // Effet haut/bas sur la cam
                     welcomeIndex ++
                     camera.position.y = (Math.sin(welcomeIndex/50)/3)+2
                     // Animation
@@ -444,17 +445,15 @@
                     renderer.render(scene, camera)
                     return
 
-                } else {         
+                } else {      
                     // On met a jour la position de la hitbox du joueur
                     hitboxPlayer.setFromCenterAndSize(camera.position, new THREE.Vector3(0.8, 2, 0.8))
-                    // console.log(parseInt(camera.position.x), parseInt(camera.position.z))
-                    //////
+
                     // POV
-                    //////
                     fpsControls.mouseEventsEnabled = false
                     deltaTime = clock.getDelta()
                     fpsControls.update(deltaTime)
-                    
+                    // Render
                     renderer.render(scene, camera);
                     requestAnimationFrame(renderFrame);
                     return
@@ -525,10 +524,10 @@
 
                 update(_) {
                     if (this.previous_ !== null) {
-                    this.current_.mouseXDelta = this.current_.mouseX - this.previous_.mouseX;
-                    this.current_.mouseYDelta = this.current_.mouseY - this.previous_.mouseY;
+                        this.current_.mouseXDelta = this.current_.mouseX - this.previous_.mouseX;
+                        this.current_.mouseYDelta = this.current_.mouseY - this.previous_.mouseY;
 
-                    this.previous_ = {...this.current_};
+                        this.previous_ = {...this.current_};
                     }
                 }
             };
@@ -538,9 +537,9 @@
                     this.camera_ = camera;
                     this.mouseEventsEnabled = true; // Activer les événements de la souris par défaut
                     this.input_ = new InputController();
-                    this.rotation_ = new THREE.Quaternion(0.3, 0.3, 0.8, 0);
+                    this.rotation_ = new THREE.Quaternion();
                     this.translation_ = new THREE.Vector3(4, 2, 0);
-                    this.phi_ = 0;
+                    this.phi_ = -Math.PI/2;
                     this.phiSpeed_ = 8;
                     this.theta_ = 0;
                     this.thetaSpeed_ = 5;
@@ -548,6 +547,7 @@
                     this.velocity_y = 0
                     this.clock = new THREE.Clock()
                     this.deltaTime = null
+                    this.firstRotation = false
                 }
 
                 update(timeElapsedS) {
@@ -560,7 +560,7 @@
                 updateCamera_(_) {
                     this.camera_.quaternion.copy(this.rotation_);
                     this.camera_.position.copy(this.translation_);
-                   
+
                     const forward = new THREE.Vector3(0, 0, -1);
                     forward.applyQuaternion(this.rotation_);
 
@@ -595,19 +595,19 @@
                 updateRotation_(timeElapsedS) {
                     const xh = this.input_.current_.mouseXDelta / window.innerWidth;
                     const yh = this.input_.current_.mouseYDelta / window.innerHeight;
-
+                    
                     this.phi_ += -xh * this.phiSpeed_;
                     this.theta_ = clamp(this.theta_ + -yh * this.thetaSpeed_, -Math.PI / 2, Math.PI / 2);
-
+                    
                     const qx = new THREE.Quaternion();
                     qx.setFromAxisAngle(new THREE.Vector3(0, 1, 0), this.phi_);
                     const qz = new THREE.Quaternion();
                     qz.setFromAxisAngle(new THREE.Vector3(1, 0, 0), this.theta_);
-
+                    
                     const q = new THREE.Quaternion();
                     q.multiply(qx);
                     q.multiply(qz);
-
+                
                     this.rotation_.copy(q);
                 }
             }
