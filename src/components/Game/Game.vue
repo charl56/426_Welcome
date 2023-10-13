@@ -330,11 +330,6 @@
                 document.addEventListener('keyup', (e) => keyUp(e), false)  // Appuie d'une touche
                 document.addEventListener('keydown', (e) => keyDown(e), false)  // Lachement d'une touche
                 document.addEventListener('wheel', (e) => wheel(e), false)  // Roulette inventaire
-                document.addEventListener("mousemove", (e) => {
-                    // console.log(e.movementX, e.movementY)
-                    // Mettez à jour la direction de regard de votre personnage en fonction de deltaX et deltaY
-                }, false);
-
             }
 
             // Roulette inventaire
@@ -382,8 +377,12 @@
                     if(keyboard[69]){
                         exitMap = !exitMap
                         eventBus.emit("openExitMap", exitMap)
+                        if(exitMap){
+                            document.exitPointerLock();
+                        } else {
+                            document.body.requestPointerLock();
+                        }
                     }
-
                 }
             }
 

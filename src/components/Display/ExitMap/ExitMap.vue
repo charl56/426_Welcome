@@ -1,7 +1,7 @@
 <template>
     <div v-if="open" class="display d-flex flex-column align-center justify-center">
         <div class="exit-map">
-            df
+            Plan d'évacuation
         </div>
     </div>   
 </template>
@@ -42,11 +42,13 @@ export default {
     width: 100%;
     height: 100%;
     cursor: pointer !important;
+    backdrop-filter: blur(2px);
 }
 
 .exit-map{
     width: 50%;
     height: 60%;
+    border-radius: 5px;
     background-color: red;
 }
 

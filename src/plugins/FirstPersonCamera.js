@@ -15,7 +15,6 @@ function clamp(x, a, b) {
 export class InputController {
     constructor(target) {
         this.target_ = target || document;
-        // this.fpsControls = fpsControls
         this.initialize_();
     }
 
@@ -35,14 +34,10 @@ export class InputController {
     }
 
     onMouseMove_(e) {
-        //sconsole.log(e.pageX, e.movementX)
         if (mouseEnabled) return; // Ne réagissez pas aux mouvements de la souris si désactivé
 
-        this.current_.mouseX = e.pageX - window.innerWidth / 2;
-        this.current_.mouseY = e.pageY - window.innerHeight / 2;
-
         if (this.previous_ === null) {
-        this.previous_ = {...this.current_};
+            this.previous_ = {...this.current_};
         }
 
         this.current_.mouseXDelta = e.movementX

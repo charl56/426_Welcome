@@ -8,7 +8,8 @@
         </div>
         <div>
             <p class="text-h6 mt-5">ZQSD + mouse to move</p>
-            <p class="text-h6 m">During visit, press P to play/pause sound</p>
+            <p class="text-h6 m">Press E to open map</p>
+            <p class="text-h6 m">Press P to play/pause sound</p>
         </div>
     </div>  
     <div v-else class="display else-welcome d-flex flex-column align-center justify-start">
@@ -68,6 +69,7 @@ p{
 /* v-if welcome */
 .if-welcome{
     cursor: pointer !important;
+    backdrop-filter: blur(3px);
 }
 
 
