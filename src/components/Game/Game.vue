@@ -53,7 +53,7 @@
             let physicsWorld
             let AmmoJs = null
             // Game
-            let fpsControls, hitboxPlayer, keyboard, backgroundSound
+            let fpsControls, hitboxPlayer, keyboard, backgroundSound, exitMap
             
             let player = this.player
             let isSound = false     // Parametre active son
@@ -77,6 +77,7 @@
                 keyboard = {}                   // Liste des touches actives, ou non
                 backgroundSound = null                     // Son de fond
                 isSound = false               // Parametre active son
+                exitMap = false
             }
 
 
@@ -160,6 +161,7 @@
                 renderer.shadowMap.type = THREE.BasicShadowMap  // Type d'ombres
                 // Créer le canvas
                 canvas.appendChild(renderer.domElement);
+
                 // Ajout d'un id au canvas
                 document.querySelector("canvas").setAttribute("id", "inLavaId" )
                 // Création scene
@@ -328,6 +330,11 @@
                 document.addEventListener('keyup', (e) => keyUp(e), false)  // Appuie d'une touche
                 document.addEventListener('keydown', (e) => keyDown(e), false)  // Lachement d'une touche
                 document.addEventListener('wheel', (e) => wheel(e), false)  // Roulette inventaire
+                document.addEventListener("mousemove", (e) => {
+                    // console.log(e.movementX, e.movementY)
+                    // Mettez à jour la direction de regard de votre personnage en fonction de deltaX et deltaY
+                }, false);
+
             }
 
             // Roulette inventaire
@@ -350,9 +357,10 @@
             function keyUse(){
                 if(welcome){
                     if(keyboard[32]){
-                        eventBus.emit("welcome", false)
-                        welcome = false
-                        backgroundSound.play()
+                        document.body.requestPointerLock();
+                        eventBus.emit("welcome", false) // Change display
+                        welcome = false     // Change car plus devant porte 
+                        backgroundSound.play()  // Lance le son
                         isSound = true
                     }
                 } else {
@@ -369,6 +377,11 @@
                             backgroundSound.play()
                         }
                         isSound = !isSound
+                    }
+                    // ExitMap
+                    if(keyboard[69]){
+                        exitMap = !exitMap
+                        eventBus.emit("openExitMap", exitMap)
                     }
 
                 }
@@ -387,7 +400,7 @@
                     requestAnimationFrame(renderFrame)
                     renderer.render(loadingScreen.scene, loadingScreen.camera)
                     return
-
+                // Menu de bienvenue, devant la porte
                 } else if(welcome){
                     camera.position.set(4, player.height, 0)
                     camera.rotation.set(0, -Math.PI/2, 0)
@@ -399,7 +412,15 @@
                     requestAnimationFrame(renderFrame)
                     renderer.render(scene, camera)
                     return
-
+                // Si ouverture tool (exitMap, ...)
+                } else if(exitMap){
+                    fpsControls.mouseEventsEnabled = true
+                    deltaTime = clock.getDelta()
+                    fpsControls.update(deltaTime)
+                    // Animation
+                    requestAnimationFrame(renderFrame)
+                    renderer.render(scene, camera)
+                    return
                 } else {      
                     // On met a jour la position de la hitbox du joueur
                     hitboxPlayer.setFromCenterAndSize(camera.position, new THREE.Vector3(0.8, 2, 0.8))

@@ -15,14 +15,21 @@
         <v-row class="row-mini-map align-center justify-start">
             <div class="mini-map"></div>
         </v-row>
+        <ExitMap />
     </div>   
 </template>
 
 <script>
+import ExitMap from './ExitMap/ExitMap.vue'
+
 import { eventBus } from '../../plugins/eventBus'   
+
 
 export default {
     name: 'AppDisplay',
+    components: {
+        ExitMap
+    },
     created(){
         eventBus.on("welcome", (value) => {
             this.welcome = value

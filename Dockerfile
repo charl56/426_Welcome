@@ -3,7 +3,7 @@
 #####
 FROM node:lts-alpine as build-stage
 
-# make the 'app' folder the current working directory
+# Make the 'app' folder the current working directory
 WORKDIR /app
 
 # Copy project files and restore as distinct layers
@@ -13,7 +13,7 @@ COPY package-lock.json ./
 # install project dependencies
 RUN npm install
 
-# Copy everything else for build
+# Copy everything we need for build
 COPY src/ ./src
 COPY static/datas/ ./static/datas   
 COPY static/Models/ ./static/Models   

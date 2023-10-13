@@ -35,7 +35,6 @@ export class InputController {
     }
 
     onMouseMove_(e) {
-        //sconsole.log(e.pageX, e.movementX)
         if (mouseEnabled) return; // Ne réagissez pas aux mouvements de la souris si désactivé
 
         this.current_.mouseX = e.pageX - window.innerWidth / 2;
@@ -45,9 +44,8 @@ export class InputController {
         this.previous_ = {...this.current_};
         }
 
-        this.current_.mouseXDelta = e.movementX
-        this.current_.mouseYDelta = e.movementY
-
+        this.current_.mouseXDelta = this.current_.mouseX - this.previous_.mouseX;
+        this.current_.mouseYDelta = this.current_.mouseY - this.previous_.mouseY;
     }
 
     onKeyDown_(e) {
