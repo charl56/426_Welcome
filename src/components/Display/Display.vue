@@ -1,5 +1,5 @@
 <template>
-    <div v-if="welcome" class="display d-flex flex-column align-center justify-center">
+    <div v-if="welcome" class="display if-welcome d-flex flex-column align-center justify-center">
         <div>
             <p class="text-h5 font-weight-bold">Bienvenue</p>
         </div>
@@ -7,8 +7,14 @@
             <p class="text-h6">(press space)</p>
         </div>
         <div>
-            <p class="text-h6 mt-5">During visit, press P to play/pause sound</p>
+            <p class="text-h6 mt-5">ZQSD + mouse to move</p>
+            <p class="text-h6 m">During visit, press P to play/pause sound</p>
         </div>
+    </div>  
+    <div v-else class="display else-welcome d-flex flex-column align-center justify-start">
+        <v-row class="row-mini-map align-center justify-start">
+            <div class="mini-map"></div>
+        </v-row>
     </div>   
 </template>
 
@@ -39,6 +45,7 @@ export default {
   
   <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+/* Basic display */
 .display{
     position:absolute;
     z-index: 1000;
@@ -46,14 +53,33 @@ export default {
     top: 0;
     width: 100%;
     height: 100%;
-    cursor: pointer !important;
 }
-
 p{
     color: black;
 }
 
+/* v-if welcome */
+.if-welcome{
+    cursor: pointer !important;
+}
 
+
+
+/* v-else welcome */
+.else-welcome{
+    cursor: none !important;
+}
+
+.row-mini-map{
+    position : absolute ;
+    width: 100%;
+    height: 20vh;
+}.mini-map{
+    height: 20vh;
+    width: 20vh;
+    background-color: gray;
+    filter: opacity(0.5);
+}
 
 
 </style>
