@@ -53,12 +53,31 @@ let sceneItems = {
         mesh: null,                                         // Données de l'affichage de l'item
         position: {                 // Position de l'item
             x: 9,
-            y: 0.01,
+            y: 1,
             z: -2,
         },
         rotation: {                 // Rotation de l'item
             x: 0,
             y: 0,
+            z: 0,
+        },
+        scale: 1.2,                    // Echelle de l'item 
+    },
+    /////////
+    // 426A
+    /////////
+    Ikea_meuble: {
+        obj: './static/Models/Appart_obj/Ikea_meuble.obj',      // Item
+        mtl: './static/Models/Appart_obj/Ikea_meuble.mtl',      // Item
+        mesh: null,                                         // Données de l'affichage de l'item
+        position: {                 // Position de l'item
+            x: 6.7,
+            y: 0.1,
+            z: -11,
+        },
+        rotation: {                 // Rotation de l'item
+            x: 0,
+            y: Math.PI/2,
             z: 0,
         },
         scale: 1.2,                    // Echelle de l'item 

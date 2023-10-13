@@ -6,6 +6,9 @@
         <div>
             <p class="text-h6">(press space)</p>
         </div>
+        <div>
+            <p class="text-h6 mt-5">During visit, press P to play/pause sound</p>
+        </div>
     </div>   
 </template>
 
@@ -45,6 +48,7 @@ export default {
     height: 100%;
     cursor: pointer !important;
 }
+
 p{
     color: black;
 }

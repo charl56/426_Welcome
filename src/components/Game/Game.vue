@@ -39,6 +39,7 @@
             eventBus.on("restartGame", () => {
                 restart()
             })
+
             ////
             // VARIABLES
             ////
@@ -54,7 +55,7 @@
             let fpsControls, hitboxPlayer, keyboard, gameStop, backgroundSound, backgroundSoundActive
             
             let player = this.player
-            let isSound = this.isSound               // Parametre active son
+            let isSound = false     // Parametre active son
 
             // Mise en place du viseur
             this.viseur = new URL('../../assets/Icons/viseur.png', import.meta.url).href
@@ -76,7 +77,7 @@
                 gameStop = false                    // Sert a mettre en pause le jeu
                 backgroundSound = null                     // Son de fond
                 backgroundSoundActive = false
-                isSound = [false]               // Parametre active son
+                isSound = false               // Parametre active son
             }
 
 
@@ -102,7 +103,6 @@
                 setupPhysicsWorld()
                 // Crée l'élement scene et les différents élement permettant l'affichage
                 setupGraphics()
-                // Prepare anim de la mort
                 await initScene()
                 // Setup des event clavier/souris
                 setupEventHandlers()
@@ -171,7 +171,7 @@
                 hitboxPlayer = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
 
                 // Ambient light
-                let ambientLight = new THREE.AmbientLight(0xFDFDFD)
+                let ambientLight = new THREE.AmbientLight(0xf2f2ed)
                 scene.add(ambientLight)
 
                 // Lights
@@ -197,20 +197,19 @@
                     light.shadow.camera.near = 0.1
                     light.shadow.camera.far = 25
                     scene.add(light)
-                
                 }
-
 
                 // Musique de fond
                 const listener = new THREE.AudioListener()
                 camera.add(listener)
-
-                const audioLoader = new THREE.AudioLoader()
+                //  Global audio source
                 backgroundSound = new THREE.Audio(listener)
+                // Load sound
+                const audioLoader = new THREE.AudioLoader()
                 audioLoader.load(sounds['CouldYouBeLoved'].soundSrc, function( buffer ){
                     backgroundSound.setBuffer(buffer)
                     backgroundSound.setLoop(true)
-                    backgroundSound.setVolume(0.8)
+                    backgroundSound.setVolume(0.2)
                 })
             }
             ////
@@ -252,22 +251,11 @@
                 // Affichage appartememnt 
                 const material = new THREE.MeshPhysicalMaterial({
                     color: 0xF6F6F6,
-                    roughness: 1,
-                    metalness: 0.5,
-                    opacity: 1,
-                    transparent: true,
-                    transmission: 1,
+                    roughness: 0.5,   // Transparence
+                    metalness: 0,   // Ouai 
+                    transmission: 0,
                     clearcoat: 1,
-                    clearcoatRoughness: 0.9
-
-                    // color: 0xFDFDFD,
-                    // roughness: 1,
-                    // metalness: 0,
-                    // opacity: 1.0,
-                    // transparent: false,
-                    // transmission: 0.99,
-                    // clearcoat: 0.9,
-                    // clearcoatRoughness: 0.95
+                    clearcoatRoughness: 1
                 })
                 // Appart 426 en stl
                 const loloader = new STLLoader()
@@ -281,14 +269,26 @@
                             0.02,
                             0.02
                         );
-                        mesh.position.x = -10
-                        mesh.position.y = 0.01
-                        mesh.position.z = 0
+                        mesh.position.set(-10, 0.01, 0)
+                        // mesh.position.y = 0.01
+                        // mesh.position.z = 0
                         mesh.rotation.x -= Math.PI/2
 
                         scene.add(mesh)
                     },
                 )
+                // Appart floor wood
+                var woodTexture = new THREE.TextureLoader().load( './static/Texture/Floor_wood.jpg', function ( texture ) {
+                    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+                    texture.offset.set( 0, 0 );
+                    texture.repeat.set( 2, 2 );
+                });
+                const wood = new THREE.Mesh(
+                    new THREE.BoxGeometry(12.2, 0, 14.5),
+                    new THREE.MeshBasicMaterial({map: woodTexture})
+                )
+                wood.position.set(12.1, 0.05, -6.3)
+                scene.add(wood)
 
          
                 // Ajout des items pour faire la map, du fichier sceneItems.js
@@ -408,6 +408,8 @@
                     if(keyboard[32]){
                         eventBus.emit("welcome", false)
                         welcome = false
+                        backgroundSound.play()
+                        isSound = true
                     }
                 } else {
                     // Sprint ou marche normal
@@ -416,6 +418,15 @@
                     } else {
                         fpsControls.playerSpeed = 7
                     }
+                    if(keyboard[80]){
+                        if(isSound){
+                            backgroundSound.pause()
+                        } else {
+                            backgroundSound.play()
+                        }
+                        isSound = !isSound
+                    }
+
                 }
             }
 
@@ -448,6 +459,7 @@
                 } else {      
                     // On met a jour la position de la hitbox du joueur
                     hitboxPlayer.setFromCenterAndSize(camera.position, new THREE.Vector3(0.8, 2, 0.8))
+                    // console.log(parseInt(camera.position.x), parseInt(camera.position.z))
 
                     // POV
                     fpsControls.mouseEventsEnabled = false
@@ -618,7 +630,6 @@
                 // Variables déclarées ici pour être envoyé en tant que props, dans un component
                 player: {height: 2, canShoot: true, canJump: true, speed: 0.065, turnSpeed: Math.PI*0.02, alive: true},
                 viseur: '',         // Change la couleur du viseur
-                isSound: [false],
             }
         },
     };
