@@ -16,7 +16,9 @@
     import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';      // Texture des objets 3D
     import { RGBELoader } from 'three/addons/loaders/RGBELoader.js'     // Image 360
     import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';    // Pour les animation
-    import { STLLoader } from 'three/addons/loaders/STLLoader.js';    // Pour les animation    
+    import { STLLoader } from 'three/addons/loaders/STLLoader.js';      // Pour les animation 
+    import Stats from 'three/examples/jsm/libs/stats.module'            // FPS
+   
     // Ammo
     import Ammo from 'ammo.js';
     // Plugins
@@ -47,13 +49,13 @@
             // Ecrans de chargement
             let ressourcesLoad, loadingScreen, welcome
             // ThreeJs : graphic
-            let scene, camera, welcomeIndex, clock, deltaTime, renderer
+            let scene, camera, welcomeIndex, clock, deltaTime, renderer, stats
             const canvas = this.$refs.scene                 // Canvas affiche le jeu
             //  AmmoJs : physic
             let physicsWorld
             let AmmoJs = null
             // Game
-            let fpsControls, hitboxPlayer, keyboard, backgroundSound, exitMap
+            let fpsControls, hitboxPlayer, keyboard, backgroundSound, exitMap, remote
             
             let player = this.player
             let isSound = false     // Parametre active son
@@ -65,6 +67,9 @@
                 // loading et death screen
                 ressourcesLoad = false
                 welcomeIndex = 0
+                stats = new Stats()
+                document.body.appendChild(stats.dom)
+
                 // ThreeJs : graphic
                 scene = camera = clock = deltaTime = null
                 renderer = new THREE.WebGLRenderer()        // Fonction de rendu
@@ -78,6 +83,7 @@
                 backgroundSound = null                     // Son de fond
                 isSound = false               // Parametre active son
                 exitMap = false
+                remote = false
             }
 
 
@@ -218,13 +224,16 @@
             ////
             async function initScene(){
                 // Affichage appartememnt 
+                
+
+                // const material = new THREE.MeshBasicMaterial({map: woodTexture2})
                 const material = new THREE.MeshPhysicalMaterial({
                     color: 0xebebd8,
-                    roughness: 0.5,   // Transparence
-                    metalness: 0,   // Ouai 
-                    transmission: 0,
+                    // emissive: 0x000000,
+                    roughness: 1,   // Transparence
+                    metalness: 0.3,   // Ouai
                     clearcoat: 1,
-                    clearcoatRoughness: 1
+                    clearcoatRoughness: 1,
                 })
                 // Appart 426 en stl
                 const loloader = new STLLoader()
@@ -242,6 +251,7 @@
                         scene.add(mesh)
                     },
                 )
+                
                 // Appart floor wood
                 var woodTexture = new THREE.TextureLoader().load( './static/Texture/Floor_wood.jpg', function ( texture ) {
                     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -355,8 +365,6 @@
                         document.body.requestPointerLock();
                         eventBus.emit("welcome", false) // Change display
                         welcome = false     // Change car plus devant porte 
-                        backgroundSound.play()  // Lance le son
-                        isSound = true
                     }
                 } else {
                     // Sprint ou marche normal
@@ -383,6 +391,16 @@
                             document.body.requestPointerLock();
                         }
                     }
+                    if(keyboard[82]){
+                        remote = !remote
+                        console.log(remote)
+                        eventBus.emit("openRemote", remote)
+                        if(remote){
+                            document.exitPointerLock();
+                        } else {
+                            document.body.requestPointerLock();
+                        }
+                    }
                 }
             }
 
@@ -390,6 +408,7 @@
             // Moteur de rendu, fait les frames
             ////
             function renderFrame() {
+                stats.update()
 
                 // Ecran de chargement
                 if(!ressourcesLoad){
@@ -412,10 +431,7 @@
                     renderer.render(scene, camera)
                     return
                 // Si ouverture tool (exitMap, ...)
-                } else if(exitMap){
-                    fpsControls.mouseEventsEnabled = true
-                    deltaTime = clock.getDelta()
-                    fpsControls.update(deltaTime)
+                } else if(exitMap || remote){
                     // Animation
                     requestAnimationFrame(renderFrame)
                     renderer.render(scene, camera)

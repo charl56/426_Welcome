@@ -1,7 +1,7 @@
-<template>
-    <div v-if="open" class="display d-flex flex-column align-center justify-center">
-        <div class="exit-map">
-            Plan d'évacuation
+    <template>
+    <div v-if="open" class="display d-flex flex-column align-end justify-end">
+        <div class="remote ma-10">
+            remote
         </div>
     </div>   
 </template>
@@ -10,9 +10,9 @@
 import { eventBus } from '../../../plugins/eventBus'   
 
 export default {
-    name: 'AppExitMap',
+    name: 'AppRemote',
     created(){
-        eventBus.on("openExitMap", (value) => {
+        eventBus.on("openRemote", (value) => {
             this.open = value
         })
     },
@@ -45,11 +45,11 @@ export default {
     backdrop-filter: blur(2px);
 }
 
-.exit-map{
-    width: 50%;
-    height: 60%;
+.remote{
+    width: 20%;
+    height: 40%;
     border-radius: 5px;
-    background-color: red;
+    background-color: rgb(122, 122, 122);
 }
 
 

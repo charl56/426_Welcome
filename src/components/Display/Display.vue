@@ -9,19 +9,23 @@
         <div>
             <p class="text-h6 mt-5">ZQSD + mouse to move</p>
             <p class="text-h6 m">Press E to open map</p>
+            <p class="text-h6 m">Press R to open remote</p>
             <p class="text-h6 m">Press P to play/pause sound</p>
         </div>
     </div>  
     <div v-else class="display else-welcome d-flex flex-column align-center justify-start">
-        <v-row class="row-mini-map align-center justify-start">
-            <div class="mini-map"></div>
+        <v-row class="row-mini-map align-center justify-end">
+            <MiniMap />
         </v-row>
         <ExitMap />
+        <Remote />
     </div>   
 </template>
 
 <script>
+import MiniMap from './MiniMap/MiniMap.vue'
 import ExitMap from './ExitMap/ExitMap.vue'
+import Remote from './Remote/Remote.vue'
 
 import { eventBus } from '../../plugins/eventBus'   
 
@@ -29,7 +33,9 @@ import { eventBus } from '../../plugins/eventBus'
 export default {
     name: 'AppDisplay',
     components: {
-        ExitMap
+        ExitMap, 
+        Remote,
+        MiniMap,
     },
     created(){
         eventBus.on("welcome", (value) => {
@@ -83,12 +89,5 @@ p{
     position : absolute ;
     width: 100%;
     height: 20vh;
-}.mini-map{
-    height: 20vh;
-    width: 20vh;
-    background-color: gray;
-    filter: opacity(0.5);
 }
-
-
 </style>
