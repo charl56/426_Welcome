@@ -1,40 +1,23 @@
 <template>
   <v-app id="app">
-    <div v-if="game">
       <!-- Jeu -->
       <Game />
-    </div>
-    <div v-else>
-      <Header />
-      <Body />
-    </div>
   </v-app>
 </template>
 
 <script>
 import Game from './components/Game/Game.vue'
-import Header from './components/Header/Header.vue'
-import Body from './components/Body/Body.vue'
 
 export default {
   name: 'App',
   components: {
     Game,
-    Header,
-    Body,
   },
   data(){
     return {
-      game: false,
     }
   },
   created(){
-    console.log()
-    if(window.innerWidth < 800){
-      this.game = false
-    } else {
-      this.game = true
-    }
   }
 }
 </script>

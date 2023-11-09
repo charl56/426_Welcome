@@ -4,4 +4,4 @@ let sounds = {
     },
 }
 
-export default sounds
+export {sounds}
