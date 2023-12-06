@@ -1,9 +1,44 @@
-
-Lights
 Don't wall passe a traver
-Changement de pièce, petite popup avec nom de la pièce
-FOnd flou au début
-plan avec tous les projets et se tp
+    First, don't have the possibility to go out of the accomodation
+    Second, can't go accross the walls
 
 
-Sonette entrée : lance playlist spotify
+
+Evacuation plan (where all projets in appartements are listed)
+    First, open map with a button
+        Div for the moment, get a list of all projets  
+            List : name, position(x,z) of projects, position(x,z) of walls 
+    Second, when you click on a name, animation to go to the point  
+        Moving to the projet ? Open the projet or not ? 
+    Best, open object on hand (smartphone...) and chose in the liste with keybord
+        Animations...
+
+    Animation to move
+        Get user position, and project position. 
+        Then create a list of point to follow, to got to the projets.
+            But we can't walke accross the walls   
+            So find a way, using walls coordonate
+
+
+
+Popup, name of the room when changing
+    First, set a list of coordinate of the rooms, with their size. 
+        This will be usefull for compare with player position
+    Second, start function every seconde for exemple, with increase every 60 turn of render
+        The function check with the list
+
+
+
+Lights 
+    First, Found best color mixe between ambiant and point light
+    Second, prepare function to change color of the light in 426A
+ 
+
+
+Entrance bell   ::::    Do we need bell ? because don't got at the aparment
+    First, find/modelise bell file, and put next to the door
+    Second, sound when ringing
+        Active the animation when enter in
+
+
+

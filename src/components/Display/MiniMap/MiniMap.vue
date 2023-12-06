@@ -10,6 +10,21 @@ import { eventBus } from '../../../plugins/eventBus'
 export default {
     name: 'AppMiniMap',
     created(){
+        eventBus.on("playerPosition", (data) => {
+            // console.log(data.x, data.z)
+            // this.position.x = data.x
+            // this.position.z = data.z
+
+            // console.log(this.miniMapHeight)
+            // console.log(this.miniMapWidth)
+
+            // let marginLeft = 
+            // let marginTop = 
+
+            // var point = document.querySelector('.point');
+
+            // point.style.marginRight = '10px
+        })
     },
     mounted(){ // Lance la fonction au chargement de la page
         var miniMap = document.querySelector('.mini-map');
@@ -18,8 +33,22 @@ export default {
     },
     data () {
         return {
+            // Map size
             miniMapHeight: 0,
             miniMapWidth: 0,
+            // Player pos
+            position : {
+                x: 0,
+                z: 0,
+            },
+            positionMin : {
+                x: 6,
+                z: 0,
+            },
+            positionMax : {
+                x: 18,
+                z: -12,
+            },
         }
     },
     methods:{

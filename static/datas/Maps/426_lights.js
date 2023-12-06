@@ -45,8 +45,8 @@ let lights = {
     },
     light_426B: {
         color: 0xf8fac0,
-        intensity: 2,
-        distance: 20,
+        intensity: 4,
+        distance: 10,
         decay: 2.5,
         position: {                
             x: 14.5,

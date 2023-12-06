@@ -178,7 +178,7 @@
                 hitboxPlayer = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
 
                 // Ambient light
-                let ambientLight = new THREE.AmbientLight(0xf2f2ed)
+                let ambientLight = new THREE.AmbientLight(0xfaf2ff)
                 scene.add(ambientLight)
 
                 // Lights
@@ -198,7 +198,7 @@
                         lightItem.position.y, 
                         lightItem.position.z, 
                     )
-                    light.decay = lightItem.decay
+                    // light.decay = lightItem.decay
 
                     light.castShadow = true
                     light.shadow.camera.near = 0.1
@@ -223,7 +223,14 @@
             // Ajout des élements à la scene, chargement graphique des éléments
             ////
             async function initScene(){
-                // Affichage appartememnt 
+                const floor = new THREE.Mesh(
+                    new THREE.PlaneGeometry(100, 100),
+                    new THREE.MeshBasicMaterial({color: 0x808080, wireframe: false})
+                )
+                floor.position.set(0, 0, 0)
+                floor.rotation.x -= Math.PI / 2;
+                floor.userData.tag = "floor"
+                scene.add(floor)
                 
 
                 // const material = new THREE.MeshBasicMaterial({map: woodTexture2})
@@ -393,7 +400,6 @@
                     }
                     if(keyboard[82]){
                         remote = !remote
-                        console.log(remote)
                         eventBus.emit("openRemote", remote)
                         if(remote){
                             document.exitPointerLock();
@@ -439,7 +445,9 @@
                 } else {      
                     // On met a jour la position de la hitbox du joueur
                     hitboxPlayer.setFromCenterAndSize(camera.position, new THREE.Vector3(0.8, 2, 0.8))
-                    // console.log(parseInt(camera.position.x), parseInt(camera.position.z))
+
+                    // Position mini-map
+                    eventBus.emit("playerPosition", {x: parseInt(camera.position.x), z: parseInt(camera.position.z)})
 
                     // POV
                     fpsControls.mouseEventsEnabled = false
