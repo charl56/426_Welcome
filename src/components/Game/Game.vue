@@ -11,8 +11,8 @@
 <script>
     // ThreeJs
     import * as THREE from 'three';
-    import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';      // Pour les objets
-    import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';      // //
+    import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';      // Pour les objets 3D
+    import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';      // Texture des objets 3D
     import { RGBELoader } from 'three/addons/loaders/RGBELoader.js'     // Image 360
     import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';    // Pour les animation
     // Plugins
@@ -21,6 +21,7 @@
     import Ammo from 'ammo.js';
     // Import datas
     import {sceneItems } from '../../../static/datas/Maps/426'
+    import { appartParts } from '../../../static/datas/Maps/appart'
     import sounds from '../../../static/datas/sounds'
 
 
@@ -39,13 +40,13 @@
             // Ecrans de chargement
             let ressourcesLoad, loadingScreen, deathScreen
             // ThreeJs : graphic
-            let scene, camera, clock, deltaTime, weaponActuel, renderer, raycaster, tmpPos, mixers
+            let scene, camera, clock, deltaTime, renderer, raycaster, tmpPos, mixers
             const canvas = this.$refs.scene                 // Canvas affiche le jeu
             //  AmmoJs : physic
             let physicsWorld, tmpTrans, rigidBodies, cbContactResult, cbContactPairResult
             let AmmoJs = null
             // Game
-            let fpsControls, inventory, indexWeapon, weaponWallArea, actualWeaponWall, hitboxPlayer, zombieKillArea, lavaArea, inLavaTimer, playerInLavaInterval, zoomView, bullets, zoom, keyboard, previousWeapon, round, remainZombie, gameStop, clips, newRound, backgroundSound, backgroundSoundActive
+            let fpsControls, inventory, indexWeapon, hitboxPlayer, zombieKillArea, keyboard, previousWeapon, round, remainZombie, gameStop, clips, newRound, backgroundSound, backgroundSoundActive
             
             let player = this.player
             let score = this.score
@@ -59,7 +60,7 @@
                 ressourcesLoad = false
                 loadingScreen = deathScreen = null
                 // ThreeJs : graphic
-                scene = camera = clock = deltaTime = weaponActuel = null
+                scene = camera = clock = deltaTime = null
                 renderer = new THREE.WebGLRenderer()        // Fonction de rendu
                 raycaster = new THREE.Raycaster()           // Axe de tire
                 tmpPos = new THREE.Vector3()
@@ -72,20 +73,9 @@
                 player = {height: 1.8, canShoot: true, canJump: true, speed: 0.065, turnSpeed: Math.PI*0.02, alive: true, weapon: 'pistolSilencer', weaponMesh: null},
                 inventory = ['knife']
                 indexWeapon = 1
-                weaponWallArea = []             // Liste des objets 'zone de colision', pour récupérer les armes sur les murs
-                actualWeaponWall = null                // Arme achetable actuelle
                 hitboxPlayer = null
                 zombieKillArea = []             // Liste des position des zombies, avec mort si contact
-                lavaArea = null                        // Zone de lave = degs
-                inLavaTimer = 0                 // Timer durée joueur dans la lave
-                playerInLavaInterval            // Timer dans la lave, pour pouvoir le lancer et le stoper
-                zoomView = 'not-aim'
-                bullets = []                    // Listes des balles en jeu
-                zoom = false                    // Permet de savoir si on vise, ou non
                 keyboard = {}                   // Liste des touches actives, ou non
-                previousWeapon = 'pistolSilencer'
-                round = 0
-                remainZombie = 0                    // Zombie restants
                 gameStop = false                    // Sert a mettre en pause le jeu
                 clips = null                               // Liste des animations dispos
                 newRound = null                            // Pour savoir nouvelle manches
@@ -147,18 +137,6 @@
                 loadingScreen.camera.lookAt(0, 0, 5)
                 loadingScreen.scene.add(loadingScreen.box)
             }
-            //////////////////
-            // Ecran anim mort
-            //////////////////
-            function deathScreenAnim(){
-                deathScreen = {
-                    scene: scene,
-                    camera: new THREE.PerspectiveCamera(90, 1280/720, 0.1, 100),
-                }
-                // Préparation de l'écran de chargement
-                deathScreen.camera.rotation.set(0, Math.PI, 0)
-                deathScreen.camera.position.set(0, 12, -11)
-            }
             ////
             // Setup AmmoJs
             ////
@@ -194,15 +172,24 @@
                 document.querySelector("canvas").setAttribute("id", "inLavaId" )
                 // Création scene
                 scene = new THREE.Scene()
-                scene.background = new THREE.Color( 0xE0E0E0E0 );
+                scene.background = new THREE.Color( 0xe3e3e3 );
                 // POV, class js
                 fpsControls = new FirstPersonCamera(camera);
 
                 // Hitbox pour les zones d'armes
                 hitboxPlayer = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
+
                 // Ambient light
-                let ambientLight = new THREE.AmbientLight(0xE0E0E0E0)
+                let ambientLight = new THREE.AmbientLight(0xFFD8C4, 0.5)
                 scene.add(ambientLight)
+                // Light
+                let light = new THREE.PointLight(0xfefff2, 1, 0)
+                light.position.set(0, 4, 0)
+                light.castShadow = true
+                light.shadow.camera.near = 0.1
+                light.shadow.camera.far = 25
+                scene.add(light)
+
                 // Musique de fond
                 const listener = new THREE.AudioListener()
                 camera.add(listener)
@@ -221,14 +208,14 @@
             async function initScene(){
                 // Sol : THREEHS
                 const floor = new THREE.Mesh(
-                    new THREE.PlaneGeometry(100, 100),
-                    new THREE.MeshBasicMaterial({color: 0xEFEFEF, wireframe: false})
+                    new THREE.PlaneGeometry(300, 300),
+                    new THREE.MeshBasicMaterial({color: 0xa6a6a6, wireframe: false})
                 )
                 floor.position.set(0, 0, 0)
                 floor.rotation.x -= Math.PI / 2;
                 floor.userData.tag = "floor"
+                floor.receiveShadow = true
                 scene.add(floor)
-
                 // Ammojs Section
                 let transform = new AmmoJs.btTransform();
                 transform.setIdentity();
@@ -251,6 +238,34 @@
                 physicsWorld.addRigidBody( body );
                 body.threeObject = floor;
 
+                
+                // // Walls for appart
+                // const appartKeys = Object.keys(appartParts);
+                // // Pour chaques items
+                // for (const part of appartKeys) {
+                //     console.log(appartParts[part])
+
+                //     const appartMesh = new THREE.Mesh(
+                //         new THREE.BoxGeometry(
+                //             appartParts[part].box.x, 
+                //             appartParts[part].box.y, 
+                //             appartParts[part].box.z, 
+                //             ),
+                //         new THREE.MeshBasicMaterial({color: appartParts[part].color, wireframe: false})
+                //     )
+                //     appartMesh.position.set(
+                //         appartParts[part].position.x,
+                //         appartParts[part].position.y,
+                //         appartParts[part].position.z,
+                //         )
+                //     // appartMesh.rotation.x -= Math.PI / 2;
+                //     appartMesh.userData.tag = "appartMesh"
+                //     appartMesh.receiveShadow = true
+                //     scene.add(appartMesh)
+                // }
+
+
+         
                 // Ajout des items pour faire la map, du fichier sceneItems.js
                 const keys = Object.keys(sceneItems);
                 // Pour chaques items
@@ -264,6 +279,26 @@
                         await materialItem.preload();
 
                         const materielMesh = await loadOBJ(sceneItem.obj, materialItem);
+                        // Inspecter les positions des vertices
+                        materielMesh.traverse(function (child) {
+                            if (child instanceof THREE.Mesh) {
+                                var geometry = child.geometry;
+                                var positions = geometry.getAttribute('position').array;
+
+                                for (var i = 0; i < positions.length; i += 3) {
+                                    var x = positions[i];
+                                    var y = positions[i + 1];
+                                    var z = positions[i + 2];
+
+                                    if (isNaN(x) || isNaN(y) || isNaN(z)) {
+                                        console.error('NaN value found in position data');
+                                        console.log('Vertex index:', i / 3);
+                                        console.log('Position:', x, y, z);
+                                    }
+                                }
+                            }
+                        });
+                        
                         // Ombre de l'objet
                         materielMesh.receiveShadow = true
                         materielMesh.castShadow = true
@@ -289,46 +324,47 @@
                         materielMesh.userData.tag = "sceneItem"
                         // Ajout de la mesh à l'objet de l'item
                         sceneItem.mesh = materielMesh;
+                        console.log(materielMesh)
                         // Ajout à la scene
                         scene.add(materielMesh)
-                        //// -------------------
-                        // ------ AMMOJS SECTION
-                        let mass = 0    // Mass=0 : objet immobile
-                        let transform = new AmmoJs.btTransform()
-                        transform.setIdentity()
-                        // Position
-                        transform.setOrigin( new AmmoJs.btVector3(
-                            sceneItem.hitBoxPosition.x,
-                            sceneItem.hitBoxPosition.y,
-                            sceneItem.hitBoxPosition.z
-                        ));
-                        // Rotation
-                        transform.setRotation( new AmmoJs.btQuaternion(
-                            sceneItem.rotation.x,
-                            sceneItem.rotation.y,
-                            sceneItem.rotation.z,
-                            1
-                        ));
-                        let motionState = new AmmoJs.btDefaultMotionState( transform );
-                        // Equivalent hitbox
-                        let colShape = new AmmoJs.btBoxShape( new AmmoJs.btVector3(
-                            sceneItem.hitBox.x,
-                            sceneItem.hitBox.y,
-                            sceneItem.hitBox.z,
-                        ));
-                        colShape.setMargin( 0.05 );
-                        // Inertie
-                        let localInertia = new AmmoJs.btVector3( 0, 0, 0 );
-                        colShape.calculateLocalInertia( mass, localInertia );
-                        // Création de l'element physique, avec ses attributs
-                        let rbInfo = new AmmoJs.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
-                        let body = new AmmoJs.btRigidBody( rbInfo );
-                        // Ajout du body au monde physique, avec contraintes de colisions
-                        physicsWorld.addRigidBody( body );
+                        // //// -------------------
+                        // // ------ AMMOJS SECTION
+                        // let mass = 0    // Mass=0 : objet immobile
+                        // let transform = new AmmoJs.btTransform()
+                        // transform.setIdentity()
+                        // // Position
+                        // transform.setOrigin( new AmmoJs.btVector3(
+                        //     sceneItem.hitBoxPosition.x,
+                        //     sceneItem.hitBoxPosition.y,
+                        //     sceneItem.hitBoxPosition.z
+                        // ));
+                        // // Rotation
+                        // transform.setRotation( new AmmoJs.btQuaternion(
+                        //     sceneItem.rotation.x,
+                        //     sceneItem.rotation.y,
+                        //     sceneItem.rotation.z,
+                        //     1
+                        // ));
+                        // let motionState = new AmmoJs.btDefaultMotionState( transform );
+                        // // Equivalent hitbox
+                        // let colShape = new AmmoJs.btBoxShape( new AmmoJs.btVector3(
+                        //     sceneItem.hitBox.x,
+                        //     sceneItem.hitBox.y,
+                        //     sceneItem.hitBox.z,
+                        // ));
+                        // colShape.setMargin( 0.05 );
+                        // // Inertie
+                        // let localInertia = new AmmoJs.btVector3( 0, 0, 0 );
+                        // colShape.calculateLocalInertia( mass, localInertia );
+                        // // Création de l'element physique, avec ses attributs
+                        // let rbInfo = new AmmoJs.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
+                        // let body = new AmmoJs.btRigidBody( rbInfo );
+                        // // Ajout du body au monde physique, avec contraintes de colisions
+                        // physicsWorld.addRigidBody( body );
 
-                        rigidBodies.push(materielMesh)
-                        materielMesh.userData.physicsBody = body
-                        body.threeObject = materielMesh
+                        // rigidBodies.push(materielMesh)
+                        // materielMesh.userData.physicsBody = body
+                        // body.threeObject = materielMesh
 
                     } catch (error) {
                         console.error("Erreur lors du chargement de la physique d'un élement", error);
@@ -533,11 +569,8 @@
                 // Ecran de chargement
                 if(!ressourcesLoad){
                     requestAnimationFrame(renderFrame)
-                    // Mouvement de la box
-                    loadingScreen.box.position.x -= 0.05
-                    if(loadingScreen.box.position.x < -10) loadingScreen.box.position.x = 10
-                    loadingScreen.box.position.y = Math.sin(loadingScreen.box.position.x)
-
+                    // // Mouvement de la box
+                    loadingScreen.box.rotation.y += 0.05
                     renderer.render(loadingScreen.scene, loadingScreen.camera)
                     return
                 } else if(!player.alive || gameStop){

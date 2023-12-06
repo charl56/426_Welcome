@@ -29,11 +29,13 @@ export default {
     }
   },
   created(){
-    console.log()
     if(window.innerWidth < 800){
       this.game = false
     } else {
       this.game = true
+    }
+    document.oncontextmenu = function() {
+      return false;
     }
   }
 }
