@@ -8,17 +8,14 @@ WORKDIR /app
 
 # Copy project files and restore as distinct layers
 COPY package.json ./
-COPY package-lock.json ./
+# COPY package-lock.json ./
 
 # install project dependencies
 RUN npm install
 
 # Copy everything else for build
 COPY src/ ./src
-COPY static/datas/ ./static/datas   
-COPY static/Models/ ./static/Models   
-COPY vite.config.js ./
-COPY index.html ./
+COPY public/ ./public
 
 # Args
 ARG VITE_FRONT_URI=$VITE_FRONT_URI 
