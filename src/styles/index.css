@@ -1,3 +1,15 @@
+html {
+  margin: 0;
+  height: 100%;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+::-webkit-scrollbar {display:none;}
+
+
 body {
   margin: 0;
   top: 0;
@@ -7,9 +19,20 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: white;
+}
+
+
+/* Surlignage du texte */
+::selection {
+  color: #7eb3e8;
+}
+::-moz-selection {
+  color: #2c3e50;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+

@@ -1,0 +1,29 @@
+.banner__content {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+@media (min-width: 50rem) {
+    .banner__content {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 25rem));
+        gap: 2rem;
+        padding: 3rem;
+    }
+
+    .banner__content>* {
+        grid-column: var(--col, 1);
+        opacity: 0;
+    }
+}
+
+.banner-img {
+    width: 100%;
+    height: auto;
+}

@@ -11,7 +11,7 @@ COPY package.json ./
 # COPY package-lock.json ./
 
 # install project dependencies
-RUN npm install
+RUN yarn install
 
 # Copy everything else for build
 COPY src/ ./src
@@ -22,14 +22,11 @@ ARG VITE_FRONT_URI=$VITE_FRONT_URI
 ARG VITE_FRONT_URL=$VITE_FRONT_URL
 
 # build app for production with minification
-RUN npm run build
-
-# Data game
-COPY static/ /app/dist/static
+RUN yarn build
 
 # production stage
 FROM nginx:stable-alpine as production-stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+COPY --from=build-stage /app/build /usr/share/nginx/html
 
 
 EXPOSE 80
