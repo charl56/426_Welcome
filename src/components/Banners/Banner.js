@@ -8,7 +8,6 @@ function Banner(props) {
         <section>
             <div className="banner__content">
                 <img src={imagePath} alt='Description' className='banner-img' />
-                <p>{props.title}</p>
             </div>
         </section>
     );

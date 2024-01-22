@@ -1,17 +1,20 @@
-import Header from './Header/Header'
-import User from './User/User';
+// import Background from './Background/Background';
+// import User from './User/User';
+import Map from './Map/Map';
+import MusicPlayer from './MusicPlayer/MusicPlayer';
+
 
 function App() {
+
+    // Disable right click
+    document.addEventListener('contextmenu', event => {
+        event.preventDefault();
+    });
+
     return (
         <div className="App">
-            <Header />
-            <User />
-            {/* <Banner name={"route1"} />
-            <Banner name={"route2"} />
-            <Banner name={"route3"} />
-            <Banner name={"route4"} />
-            <Banner name={"route5"} />
-            <Banner name={"route6"} /> */}
+            <Map />
+            <MusicPlayer />
         </div>
     );
 }

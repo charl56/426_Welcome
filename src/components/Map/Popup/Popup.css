@@ -1,0 +1,20 @@
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    height: 100dvh;
+    margin: 0;
+    padding: 0;
+    background: #ff4141;
+    z-index: 401;
+}
+
+.popup-content {
+    text-align: center;
+}
+
+.popup.open {
+    display: block;
+}

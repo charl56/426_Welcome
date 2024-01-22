@@ -1,0 +1,11 @@
+.music-player{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: auto;
+    height: auto;
+    border-radius: 5px;
+    z-index: 400;
+    border: 0;
+    margin: 5px;
+}

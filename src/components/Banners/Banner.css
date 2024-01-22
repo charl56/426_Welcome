@@ -1,28 +1,25 @@
+/* Section */
+section {
+    height: 100%;
+    width: 100%;
+}
+
+/* Banner */
 .banner__content {
     width: 100%;
-    position: fixed;
-    top: 0;
-    height: 100vh;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
+    padding: 0 2rem;
 }
-
-@media (min-width: 50rem) {
+@media (max-width: 800px) {
     .banner__content {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 25rem));
-        gap: 2rem;
-        padding: 3rem;
-    }
-
-    .banner__content>* {
-        grid-column: var(--col, 1);
-        opacity: 0;
+        padding: 0;
     }
 }
 
+/* Banner image */
 .banner-img {
     width: 100%;
     height: auto;

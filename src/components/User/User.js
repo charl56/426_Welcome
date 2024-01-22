@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { gsap, ScrollTrigger, MotionPathPlugin } from 'gsap/all';
-import Banner from '../Banners/Banner'
+
 
 import './User.css'
 
@@ -13,7 +13,7 @@ function User() {
         const rx = window.innerWidth < 1000 ? window.innerWidth / 1200 : 1
         const ry = window.innerHeight < 700 ? window.innerHeight / 1200 : 1
 
-        // Chemin du poisson
+        // Fish path
         const path = [
             // 1
             { x: 800, y: 200 },
@@ -117,10 +117,6 @@ function User() {
 
         tl.pause()
 
-        const showContent = (div) => {
-            gsap.to(div, { opacity: 1, duration: 1 })
-            console.log(div)
-        }
 
         const rotateFish = (self) => {
             if (self.direction === -1) {
@@ -130,24 +126,29 @@ function User() {
             }
         }
 
-        const hideText = (div) => {
+        const showContent = (div, p) => {
+            gsap.to(div, { opacity: 1, duration: 1 })
+            gsap.to(p, { opacity: 1, duration: 1 })
+        }
+
+        const hideText = (div, p) => {
             gsap.to(div, { opacity: 0, duration: 1 })
+            gsap.to(p, { opacity: 0, duration: 1 })
         }
 
         sections.forEach((section, i) => {
-            const div = section.querySelector('div')
-            gsap.to(div, { opacity: 0 })
+            // const div = section.querySelector('div')
+            // const p = section.querySelector('p')
+            // gsap.to(div, { opacity: 0 })
+            // gsap.to(p, { opacity: 0 })
 
             ScrollTrigger.create({
                 trigger: section,
                 start: "top top",
-                onEnter: () => showContent(div),
-                onEnterBack: () => {
-                },
-                onLeave: () => {
-                    hideText(div)
-                },
-                onLeaveBack: () => hideText(div),
+                // onEnter: () => showContent(div, p),
+                // onEnterBack: () => showContent(div, p),
+                // onLeave: () => hideText(div, p),
+                // onLeaveBack: () => hideText(div, p),
                 onUpdate: (self) => rotateFish(self)
             })
         })
@@ -183,46 +184,6 @@ function User() {
                         <div className="fish__fin fish__fin--2"></div>
                     </div>
                 </div>
-            </div>
-
-            <div className="content">
-                <Banner title={"First project"} name={"route1"} />
-                <Banner title={"Second project"} name={"route2"} />
-                <Banner title={"Third project"} name={"route3"} />
-                <Banner title={"Fourth project"} name={"route4"} />
-                <Banner title={"Five project"} name={"route5"} />
-                <Banner title={"Six project"} name={"route6"} />
-
-                {/* <section>
-                    <div className="section__content">
-                        <p>First project</p>
-                    </div>
-                </section>
-                <section>
-                    <div className="section__content">
-                        <p>Second project</p>
-                    </div>
-                </section>
-                <section>
-                    <div className="section__content">
-                        <p>Third project</p>
-                    </div>
-                </section>
-                <section>
-                    <div className="section__content">
-                        <p>Fourth project</p>
-                    </div>
-                </section>
-                <section>
-                    <div className="section__content">
-                        <p>Five project</p>
-                    </div>
-                </section>
-                <section>
-                    <div className="section__content">
-                        <p>Six project</p>
-                    </div>
-                </section> */}
             </div>
         </div>
     );

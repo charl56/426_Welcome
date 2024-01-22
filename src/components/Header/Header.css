@@ -1,15 +1,19 @@
 .header-div {
+    position: absolute;
+    width: 100vw;
+    height: auto;
     text-align: center;
 }
 
-.header-title{
+.header-title {
     margin: 0;
     padding: 20px;
     color: black;
     font-size: xx-large;
     font-weight: bolder;
 }
-.header-description{
+
+.header-description {
     margin: 0;
     font-size: large;
     padding: 10px;
