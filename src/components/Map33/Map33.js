@@ -47,7 +47,7 @@ function MyMap() {
 
 
         // Add divs to map
-        $('.groupe1 .bloc').htmlOverlay().addTo(map);
+        $('.groupe1').htmlOverlay().addTo(map);
         $('.groupe2 .bloc').htmlOverlay().addTo(map);
 
 
@@ -80,9 +80,11 @@ function MyMap() {
             {/* Map */}
             <div id="map"></div>
             {/* Pol room div */}
-            <div className="groupe1">
-                <div id="bloc1" className="bloc wide" data-pos="5, 5">
+            <div className="groupe1" data-pos="5, 5">
+                <div id="bloc1" className="bloc wide">
                     <h3>Chambre Pol</h3>
+                </div>
+                <div id="bloc2" className="bloc wide">
                     <p>Vinyle-Vase</p>
                 </div>
             </div>
