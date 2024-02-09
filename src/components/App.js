@@ -1,6 +1,6 @@
-// import Background from './Background/Background';
-// import User from './User/User';
 import Map from './Map/Map';
+import Map33 from './Map33/Map33';
+import MapDrag from './MapDrag/MapDrag';
 import MusicPlayer from './MusicPlayer/MusicPlayer';
 
 
@@ -13,8 +13,9 @@ function App() {
 
     return (
         <div className="App">
-            <Map />
-            <MusicPlayer />
+            <Map33 />
+            {/* <MapDrag /> */}
+            {/* <MusicPlayer /> */}
         </div>
     );
 }

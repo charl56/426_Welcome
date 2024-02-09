@@ -1,0 +1,22 @@
+.map {
+    /* Ensure the map takes up the full size of its container */
+    inset: 0;
+}
+
+
+.groupe1 {
+    width: 400px; 
+    height: 200px;
+    background-color: red;
+}.groupe2 {
+    width: 400px; 
+    height: 200px;
+    background-color: blue;
+}
+
+
+.bloc {
+    /* Styles for each block */
+}
+
+/* ... other styles ... */

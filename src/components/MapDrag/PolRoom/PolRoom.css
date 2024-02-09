@@ -1,0 +1,41 @@
+.pol-room-div {
+    position: absolute;
+    top: 51%;
+    left: 51%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.vinyl {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+
+.vinyl::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 50%; /* Adjust the value to control the part to be cut */
+    background-color: #fff; /* Set the background color to match your background */
+    z-index: -1; /* Place it behind the main vinyl */
+  }
+  
+  .vinyl:nth-child(1) {
+    transform: scale(1); /* No scale for the first vinyl */
+  }
+  
+  .vinyl:nth-child(2) {
+    transform: scale(0.8);
+  }
+  
+  .vinyl:nth-child(3) {
+    transform: scale(0.6);
+  }

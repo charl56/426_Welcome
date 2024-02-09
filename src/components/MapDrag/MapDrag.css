@@ -1,0 +1,19 @@
+#container {
+    height: 5000px;
+    width: 5000px;
+    scale: 1.2;
+}
+/* #container:hover{
+    cursor: grab;
+}#container:active{
+    cursor: grabbing;
+} */
+
+.box {
+    background-image: url('../../assets/CACA-01.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 5000px;
+    height: 5000px;
+    position: absolute;
+}

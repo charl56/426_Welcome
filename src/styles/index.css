@@ -24,7 +24,7 @@ body {
   font-family: "Judson", serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: white;
+  background-color: rgb(221, 221, 221);
 }
 
 @media (min-width: 40em) {
