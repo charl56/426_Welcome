@@ -1,7 +1,4 @@
-import Map from './Map/Map';
-import Map33 from './Map33/Map33';
-import MusicPlayer from './MusicPlayer/MusicPlayer';
-
+import MyMap from './MyMap/MyMap';
 
 function App() {
 
@@ -12,8 +9,7 @@ function App() {
 
     return (
         <div className="App">
-            <Map33 />
-            {/* <MusicPlayer /> */}
+            <MyMap />
         </div>
     );
 }

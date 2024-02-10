@@ -10,7 +10,7 @@ L.HtmlOverlay = L.Layer.extend({
 
     options: {
         interactive: false,
-        zIndex: 1,
+        zIndex: 10,
         className: '',
         idName: '',
         zoom: '' // le niveau de zoom ou la div est affiché à l'échelle 1
@@ -92,12 +92,14 @@ L.HtmlOverlay = L.Layer.extend({
         if (this.options.zIndex) {
             this._updateZIndex();
         }
-
+        
         // ok c'est là qu'on injecte le code html
         dom.innerHTML = this._code;
 
         this._dom = dom;
         this._dom.style.position = "relative";
+        this._dom.style.zIndex = 2;
+
 
         // avec des réglages css pour éviter des soucis...
         this._inner = this._dom.childNodes[0]; // un seul noeud
@@ -233,7 +235,7 @@ if (typeof $ != 'undefined') {
             // on retourne un groupe de markers
             return L.layerGroup(layers);
 
-        } else if (layers.length == 1) {
+        } else if (layers.length === 1) {
             // on retourne juste le layer
             return layers[0];
 

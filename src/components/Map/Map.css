@@ -1,6 +1,0 @@
-/* Styles CSS pour définir la taille de la carte */
-.leaflet-container {
-  height: 100svh;
-  width: 100vw;
-  background-color: white;
-}
