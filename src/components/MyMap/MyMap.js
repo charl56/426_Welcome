@@ -1,5 +1,4 @@
-import React from "react";
-// Libs for leaflet & Co
+import React, { useEffect, useRef } from "react";// Libs for leaflet & Co
 import '../../libs/leaflet-html-overlay'
 import 'leaflet/dist/leaflet.css';
 import L from "leaflet";
@@ -7,65 +6,77 @@ import $ from 'jquery';
 // CSS
 import './MyMap.css';
 // Components
-import PolRoom from './PolRoom/PolRoom'
+import VinylVase from './VinylVase/VinylVase'
+import Jukebox from './Jukebox/Jukebox'
+
+const MyMap = React.memo(() => {
+
+    console.log("MyMap")
+
+    const mapRef = useRef();
+    useEffect(() => {
+
+        if (document.getElementById('map').childElementCount == 0) {
 
 
-function MyMap() {
+            // draggable layers for dev process
+            const imageBounds = [
+                [11, 0],  // Top-left corner coordinates of the image.
+                [0, 10],  // Bottom-right corner coordinates of the image.
+            ];
+            const initialCoordinates = [5, 5];
+            const initialZoom = 8;
 
-    window.onload = function () {
+            // Create map
+            var map = L.map('map', {
+                minZoom: 7,
+                maxZoom: 10,
+                maxBounds: imageBounds,
+                maxBoundsViscosity: 1, // Makes exceeding the bounds more resistant.
+                zoomControl: false,
+                attributionControl: false
+            }).setView(initialCoordinates, initialZoom);
 
-        // draggable layers for dev process
-        const imageBounds = [
-            [11, 0],  // Top-left corner coordinates of the image.
-            [0, 10],  // Bottom-right corner coordinates of the image.
-        ];
-        const initialCoordinates = [5, 5];
-        const initialZoom = 7;
+            // Add custom image as a background layer.
+            const imagePath = require('../../assets/CACA-01.png');  // Replace this with the correct path to your image.
+            L.imageOverlay(imagePath, imageBounds).addTo(map);
+            // const imageSvg = require('../../assets/APP426.svg');  // Replace this with the correct path to your image.
+            // L.svgOverlay(imageSvg, imageBounds).addTo(map);
 
-        // Create map
-        var map = L.map('map', {
-            minZoom: 7,
-            maxZoom: 10,
-            maxBounds: imageBounds,
-            maxBoundsViscosity: 0.5, // Makes exceeding the bounds more resistant.
-            zoomControl: false,
-            attributionControl: false
-        }).setView(initialCoordinates, initialZoom);
+            // Add divs to map
+            $('.groupe1').htmlOverlay().addTo(map);
+            $('.groupe2').htmlOverlay().addTo(map);
 
-        // Add divs to map
-        $('.groupe1').htmlOverlay().addTo(map);
-        // $('.groupe2').htmlOverlay().addTo(map);
 
-        // Add custom image as a background layer.
-        const imagePath = require('../../assets/CACA-01.png');  // Replace this with the correct path to your image.
-        L.imageOverlay(imagePath, imageBounds).addTo(map);
-        // const imageSvg = require('../../assets/APP426.svg');  // Replace this with the correct path to your image.
-        // L.svgOverlay(imageSvg, imageBounds).addTo(map);
+            // dev tools
+            map.on('click', function (e) {
+                console.log(e.latlng.lat + ', ' + e.latlng.lng);
+            });
 
-        // dev tools
-        map.on('click', function (e) {
-            console.log(e.latlng.lat + ', ' + e.latlng.lng);
-        });
-    };
+        }
+
+        return () => {
+            if (mapRef.current) {
+                mapRef.current.remove();
+                mapRef.current = null;
+            }
+        };
+
+    }, []); // Le tableau vide indique que cet effet doit être exécuté une seule fois après le premier rendu.
 
 
     return (
         <div>
             {/* Map */}
             <div id="map"></div>
-            {/* Pol room div */}
             <div className="groupe1" data-pos="5.3, 5.1">
-               <PolRoom />
+                <VinylVase />
             </div>
-            {/* Charles room div */}
-            {/* <div className="groupe2" data-pos="5.6, 4">
-                <div id="bloc2" className="bloc wide">
-                    <h3>Chambre Charles</h3>
-                    <p>Jukebox</p>
-                </div>
-            </div> */}
+            <div className="groupe2" data-pos="5.54, 4.13">
+                <Jukebox />
+            </div>
         </div>
     );
-}
+});
 
 export default MyMap;

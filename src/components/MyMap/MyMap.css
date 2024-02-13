@@ -2,17 +2,20 @@
     /* Ensure the map takes up the full size of its container */
     inset: 0;
 }
+
 .leaflet-container {
-    height: 100svh;
-    width: 100vw;
-    background-color: white;
-  }
+    height: 120vh;
+    width: 120vw;
+    /* margin: 10vh 10vw; */
+    background-color: rgb(241, 122, 122);
+}
 
 .groupe1 {
     /* width: 60px; 
     height: auto; */
-}.groupe2 {
 }
+
+.groupe2 {}
 
 
 .bloc {

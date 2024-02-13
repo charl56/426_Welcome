@@ -1,3 +1,10 @@
+/* 
+  Copyright (c)
+  2020 <NAME>
+  author: Gildas Paubert : https://www.gildasp.fr/
+  source: https://lab.gildasp.fr/leaflet-html-overlay/ 
+*/
+
 import L from "leaflet";
 import $ from 'jquery';
 

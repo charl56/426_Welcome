@@ -1,12 +1,12 @@
 // React
 import React from 'react';
-import './PolRoom.css'
+import './VinylVase.css'
 
-import logo1 from './laylow.jpg'
-import logo2 from './lomepal.jpg'
-import logo3 from './oboy.jpg'
+import logo1 from './images/laylow.jpg'
+import logo2 from './images/lomepal.jpg'
+import logo3 from './images/oboy.jpg'
 
-export default function PolRoom() {
+export default function VinylVase() {
 
 
     return (
