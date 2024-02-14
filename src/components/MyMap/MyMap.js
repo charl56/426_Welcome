@@ -11,12 +11,11 @@ import Jukebox from './Jukebox/Jukebox'
 
 const MyMap = React.memo(() => {
 
-    console.log("MyMap")
 
     const mapRef = useRef();
     useEffect(() => {
 
-        if (document.getElementById('map').childElementCount == 0) {
+        if (document.getElementById('map').childElementCount === 0) {
 
 
             // draggable layers for dev process
@@ -29,7 +28,7 @@ const MyMap = React.memo(() => {
 
             // Create map
             var map = L.map('map', {
-                minZoom: 7,
+                minZoom: 6,
                 maxZoom: 10,
                 maxBounds: imageBounds,
                 maxBoundsViscosity: 1, // Makes exceeding the bounds more resistant.

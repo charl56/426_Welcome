@@ -4,10 +4,11 @@
 }
 
 .leaflet-container {
-    height: 120vh;
-    width: 120vw;
+    height: 100lvh;
+    width: 100vw;
     /* margin: 10vh 10vw; */
-    background-color: rgb(241, 122, 122);
+    /* background-color: rgb(241, 122, 122); */
+    background-color: white;
 }
 
 .groupe1 {
