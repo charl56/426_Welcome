@@ -100,8 +100,8 @@
 /* Change on hover */
 .cube__face:hover .music__player{
     display: block;
-    height: 200%;
-    width: 250%;
-}.cube__face:hover .jukebox {
+    height: 170px;
+    width: 300px;
+}.cube__face:hover .jukebox_img {
     display: none;
 }

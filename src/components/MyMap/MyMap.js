@@ -9,14 +9,13 @@ import './MyMap.css';
 import VinylVase from './VinylVase/VinylVase'
 import Jukebox from './Jukebox/Jukebox'
 
-const MyMap = React.memo(() => {
+
+const MyMap = React.memo(({ onLoadingComplete }) => {
 
 
     const mapRef = useRef();
     useEffect(() => {
-
         if (document.getElementById('map').childElementCount === 0) {
-
 
             // draggable layers for dev process
             const imageBounds = [
@@ -32,8 +31,11 @@ const MyMap = React.memo(() => {
                 maxZoom: 10,
                 maxBounds: imageBounds,
                 maxBoundsViscosity: 1, // Makes exceeding the bounds more resistant.
-                zoomControl: false,
-                attributionControl: false
+                zoomControl: false,     // Hide +/- btns
+                attributionControl: false,  // Hide "laeflet ..."
+                boxZoom: false,         // Desactive shit+click to zoom
+                doubleClickZoom: false,  // Desactive double click to zoom on map
+                touchZoom: false,       // Desactive zoom on smartphone
             }).setView(initialCoordinates, initialZoom);
 
             // Add custom image as a background layer.
@@ -46,15 +48,19 @@ const MyMap = React.memo(() => {
             $('.groupe1').htmlOverlay().addTo(map);
             $('.groupe2').htmlOverlay().addTo(map);
 
-
-            // dev tools
-            map.on('click', function (e) {
-                console.log(e.latlng.lat + ', ' + e.latlng.lng);
-            });
-
         }
 
+        const handleLoad = () => {
+            console.log("charge la map")
+            onLoadingComplete();
+            // Vous pouvez  ici exécuter du code supplémentaire qui nécessite que la page soit complètement chargée
+        };
+        window.addEventListener('load', handleLoad);
+
+
         return () => {
+            window.removeEventListener('load', handleLoad);
+
             if (mapRef.current) {
                 mapRef.current.remove();
                 mapRef.current = null;
