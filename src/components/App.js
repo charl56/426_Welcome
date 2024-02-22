@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";// Libs for leaflet & Co
+import React, { useState } from "react";// Libs for leaflet & Co
 // Components
-import MyMap from './MyMap/MyMap';
+import MyBigMap from './MyBigMap/MyBigMap';
+import MyLittleMap from "./MyLittleMap/MyLittleMap";
 import Loader from './Loader/Loader'
 
 function App() {
@@ -17,11 +18,12 @@ function App() {
         setIsLoading(false);
     };
 
-
     return (
         <div className="App">
             <Loader isLoading={isLoading} />
-            <MyMap onLoadingComplete={handleLoadingComplete} />
+            <MyBigMap onLoadingComplete={handleLoadingComplete} />
+            {/* <MyBigMap /> */}
+            <MyLittleMap />
         </div>
     );
 }
