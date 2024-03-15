@@ -10,7 +10,7 @@ function App() {
     document.addEventListener('contextmenu', event => {
         event.preventDefault();
     });
-
+    console.log("app")
     // Loader
     const [isLoading, setIsLoading] = useState(true);
 
@@ -20,7 +20,7 @@ function App() {
 
     return (
         <div className="App">
-            <Loader isLoading={isLoading} />
+            {/* <Loader isLoading={isLoading} /> */}
             <MyBigMap onLoadingComplete={handleLoadingComplete} />
             {/* <MyBigMap /> */}
             <MyLittleMap />

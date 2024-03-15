@@ -10,14 +10,15 @@ import VinylVase from './VinylVase/VinylVase'
 import Jukebox from './Jukebox/Jukebox'
 
 
-const MyBigMap = React.memo(({ onLoadingComplete }) => {
+const MyBigMap = ({ onLoadingComplete }) => {
 
     const [isMapLoaded, setIsMapLoaded] = useState(false);
 
-
     const mapRef = useRef();
     useEffect(() => {
+        console.log('useEffect')
         if (document.getElementById('map').childElementCount === 0) {
+            console.log('map loading')
 
             // draggable layers for dev process
             const imageBounds = [
@@ -40,9 +41,7 @@ const MyBigMap = React.memo(({ onLoadingComplete }) => {
                 touchZoom: false,       // Desactive zoom on smartphone
             })
 
-            console.log("load map before")
             map.whenReady(() => {
-                console.log("ready")
                 setIsMapLoaded(true);
 
             })
@@ -59,12 +58,10 @@ const MyBigMap = React.memo(({ onLoadingComplete }) => {
             // L.svgOverlay(imageSvg, imageBounds).addTo(map);
 
             // Add divs to map
-            $('.groupe1').htmlOverlay().addTo(map);
-            $('.groupe2').htmlOverlay().addTo(map);
+            // $('.groupe1').htmlOverlay().addTo(map);
+            // $('.groupe2').htmlOverlay().addTo(map);
 
-            map.setView(initialCoordinates, initialZoom);
-
-          
+            map.setView(initialCoordinates, initialZoom);          
         }
 
 
@@ -80,7 +77,6 @@ const MyBigMap = React.memo(({ onLoadingComplete }) => {
 
     useEffect(() => {
         if (isMapLoaded) {
-            console.log("onLoadingcomplet")
             onLoadingComplete();
         }
     }, [isMapLoaded, onLoadingComplete]);
@@ -88,14 +84,14 @@ const MyBigMap = React.memo(({ onLoadingComplete }) => {
     return (
         <div className="map__big--screen">
             <div id="map"></div>
-            <div className="groupe1" data-pos="5.8, 5.4">
+            {/* <div className="groupe1" data-pos="5.7, 5.4">
                 <VinylVase />
             </div>
-            <div className="groupe2" data-pos="6.1, 4.25">
+            <div className="groupe2" data-pos="6.1, 4.12">
                 <Jukebox />
-            </div>
+            </div> */}
         </div>
     );
-});
+};
 
 export default MyBigMap;
