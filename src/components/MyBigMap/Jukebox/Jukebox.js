@@ -1,7 +1,8 @@
 // React
 import React, { useEffect, useRef, useState } from "react";
 import './Jukebox.css'
-import { addEventListener, removeEventListener ,moveArms} from './initEventListener'
+import { addEventListener, removeEventListener ,moveArms} from './moveArmsCd'
+import YoutubePlayer from "./YoutubePlayer/YoutubePlayer";
 // Img
 import zamdane from './images/zamdane.jpg'
 import youvdee from './images/youdee.jpg'
@@ -32,37 +33,38 @@ function Jukebox() {
         <div ref={jukeboxRef} className='charles-room-div'>
             <div className="jb__box">
                 <div className="jb__disc disc-1">
-                    <img src={zamdane} alt='jukebox_front' className='disc__img' />
+                    <img src={zamdane} alt='img' className='disc__img' />
                 </div>
                 <div className="jb__disc disc-2">
-                    <img src={azur} alt='jukebox_back' className='disc__img' />
+                    <img src={azur} alt='img' className='disc__img' />
                 </div>
                 <div className="jb__disc disc-3">
-                    <img src={youvdee} alt='jukebox_back' className='disc__img' />
+                    <img src={youvdee} alt='img' className='disc__img' />
 
                 </div>
                 <div className="jb__disc disc-4">
-                    <img src={pac} alt='jukebox_back' className='disc__img' />
+                    <img src={pac} alt='img' className='disc__img' />
 
                 </div>
                 <div className="jb__player disc-5"></div>
                 <div className="jb__disc disc-6">
-                    <img src={bobmarley} alt='jukebox_back' className='disc__img' />
+                    <img src={bobmarley} alt='img' className='disc__img' />
 
                 </div>
                 <div className="jb__disc disc-7">
-                    <img src={saturncitizen} alt='jukebox_back' className='disc__img' />
+                    <img src={saturncitizen} alt='img' className='disc__img' />
 
                 </div>
                 <div className="jb__disc disc-8">
-                    <img src={drdre} alt='jukebox_back' className='disc__img' />
+                    <img src={drdre} alt='img' className='disc__img' />
                 </div>
                 <div className="jb__disc disc-9">
-                    <img src={luvresval} alt='jukebox_back' className='disc__img' />
+                    <img src={luvresval} alt='img' className='disc__img' />
                 </div>
             </div>
             <div className="arm arm__horizontal" id="arm-horizontal"></div>
             <div className="arm arm__vertical" id="arm-vertical"></div>
+            {/* <YoutubePlayer /> */}
         </div>
     );
 }

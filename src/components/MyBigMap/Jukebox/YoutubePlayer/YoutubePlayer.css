@@ -1,0 +1,7 @@
+.music__player {
+    display: block;
+    position: fixed;
+    height: 125px;
+    width: 125px;
+    border: 0;
+}
