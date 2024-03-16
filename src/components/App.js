@@ -1,28 +1,26 @@
-import React, { useState } from "react";// Libs for leaflet & Co
-// Components
+import React, { useState } from "react";
 import MyBigMap from './MyBigMap/MyBigMap';
 import MyLittleMap from "./MyLittleMap/MyLittleMap";
 import Loader from './Loader/Loader'
 
 function App() {
-
-    // Disable right click
+    console.log("app")
     document.addEventListener('contextmenu', event => {
         event.preventDefault();
     });
-    console.log("app")
-    // Loader
+
     const [isLoading, setIsLoading] = useState(true);
 
     const handleLoadingComplete = () => {
-        setIsLoading(false);
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 10);
     };
 
     return (
         <div className="App">
-            {/* <Loader isLoading={isLoading} /> */}
+            {isLoading && <Loader />}
             <MyBigMap onLoadingComplete={handleLoadingComplete} />
-            {/* <MyBigMap /> */}
             <MyLittleMap />
         </div>
     );

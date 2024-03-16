@@ -1,50 +1,40 @@
-import React, { useEffect, useRef, useState } from "react";// Libs for leaflet & Co
+import React, { useEffect, useRef } from "react";
 import '../../libs/leaflet-html-overlay'
 import 'leaflet/dist/leaflet.css';
 import L from "leaflet";
 import $ from 'jquery';
-// CSS
 import './MyBigMap.css';
-// Components
 import VinylVase from './VinylVase/VinylVase'
 import Jukebox from './Jukebox/Jukebox'
 
-
 const MyBigMap = ({ onLoadingComplete }) => {
-
-    const [isMapLoaded, setIsMapLoaded] = useState(false);
-
     const mapRef = useRef();
-    useEffect(() => {
-        console.log('useEffect')
-        if (document.getElementById('map').childElementCount === 0) {
-            console.log('map loading')
 
-            // draggable layers for dev process
+    useEffect(() => {
+        if (document.getElementById('map').childElementCount === 0) {
             const imageBounds = [
-                [11, 0],  // Top-left corner coordinates of the image.
-                [0, 10],  // Bottom-right corner coordinates of the image.
+                [11, 0],
+                [0, 10],
             ];
             const initialCoordinates = [5, 5];
             const initialZoom = 8;
 
-            // Create map
             var map = L.map('map', {
                 minZoom: 6,
                 maxZoom: 9,
                 maxBounds: imageBounds,
-                maxBoundsViscosity: 1, // Makes exceeding the bounds more resistant.
-                zoomControl: true,     // Hide +/- btns
-                attributionControl: false,  // Hide "laeflet ..."
-                boxZoom: false,         // Desactive shit+click to zoom
-                doubleClickZoom: false,  // Desactive double click to zoom on map
-                touchZoom: false,       // Desactive zoom on smartphone
-            })
+                maxBoundsViscosity: 1,
+                zoomControl: true,
+                attributionControl: false,
+                boxZoom: false,
+                doubleClickZoom: false,
+                touchZoom: false,
+            });
 
             map.whenReady(() => {
-                setIsMapLoaded(true);
+                onLoadingComplete();
+            });
 
-            })
 
             // map.on('load', () => {
             //     console.log("load map")
@@ -52,46 +42,38 @@ const MyBigMap = ({ onLoadingComplete }) => {
             // });
 
             // Add custom image as a background layer.
-            const imagePath = require('../../assets/CACAPOUSSE-01.png');  // Replace this with the correct path to your image.
+            const imagePath = require('../../assets/CACAPOUSSE-01.png');
             L.imageOverlay(imagePath, imageBounds).addTo(map);
+
             // const imageSvg = require('../../assets/APP426.svg');  // Replace this with the correct path to your image.
             // L.svgOverlay(imageSvg, imageBounds).addTo(map);
 
-            // Add divs to map
-            // $('.groupe1').htmlOverlay().addTo(map);
-            // $('.groupe2').htmlOverlay().addTo(map);
 
-            map.setView(initialCoordinates, initialZoom);          
+            $('.groupe1').htmlOverlay().addTo(map);
+            $('.groupe2').htmlOverlay().addTo(map);
+            map.setView(initialCoordinates, initialZoom);
         }
 
-
         return () => {
-
             if (mapRef.current) {
                 mapRef.current.remove();
                 mapRef.current = null;
             }
         };
-
-    }, []); // Le tableau vide indique que cet effet doit être exécuté une seule fois après le premier rendu.
-
-    useEffect(() => {
-        if (isMapLoaded) {
-            onLoadingComplete();
-        }
-    }, [isMapLoaded, onLoadingComplete]);
+    }, [onLoadingComplete]);
 
     return (
         <div className="map__big--screen">
             <div id="map"></div>
-            {/* <div className="groupe1" data-pos="5.7, 5.4">
+            {/* posY, poxX */}
+            <div className="groupe1" data-pos="5.7, 5.4">
                 <VinylVase />
             </div>
-            <div className="groupe2" data-pos="6.1, 4.12">
+            <div className="groupe2" data-pos="6.05, 4.2">
                 <Jukebox />
-            </div> */}
+            </div>
         </div>
     );
 };
 
-export default MyBigMap;
+export default MyBigMap
