@@ -27,11 +27,8 @@ function YoutubePlayer() {
 
 
     useEffect(() => {
-        console.log("link : ", link);
-
         let iframe = document.getElementsByClassName('youtube-player-div')[0];
         if (link === null) {
-            console.log("cacher")
             iframe.classList.remove('show-ytb-player')
             document.getElementById('iframe-ytb-player').setAttribute('src', null);
             return;

@@ -11,24 +11,6 @@ const armsPositions = {                 // List of positions for cds
     8: { horizontal: { value: 103 }, vertical: { value: 60 }, link: "https://www.youtube.com/embed/8GliyDgAGQI" },
     9: { horizontal: { value: 103 }, vertical: { value: 103 }, link: "https://www.youtube.com/embed/RI4xBNugTp4" },
 };
-<iframe width="1903" height="742" src="https://www.youtube.com/embed/WzLZpZCVohI" title="Disiz - Casino" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
-
-// Fonction pour ajouter les écouteurs d'événements
-export function addEventListener() {
-    for (let i = 1; i <= 9; i++) {
-        const cdElement = document.querySelector(`.disc-${i}`);
-        cdElement.addEventListener('click', () => handleCdClick(i));
-    }
-}
-
-// Fonction pour supprimer les écouteurs d'événements
-export function removeEventListener() {
-    for (let i = 1; i <= 9; i++) {
-        const cdElement = document.querySelector(`.disc-${i}`);
-        cdElement.removeEventListener('click', () => handleCdClick(i));
-    }
-}
 
 
 // Variables d'état
@@ -49,6 +31,12 @@ function moveCdToOriginalPosition(cdElement) {
     cdElement.style.transform = 'translate(0, 0)';
 }
 
+// Define the event handler function outside
+function handleCdClickWrapper(pos) {
+    return function () {
+        handleCdClick(pos);
+    };
+}
 // Fonction pour gérer le clic sur un CD
 function handleCdClick(pos) {
     const cdElement = document.querySelector(`.disc-${pos}`).children[0];
@@ -56,7 +44,6 @@ function handleCdClick(pos) {
     if (pos !== 5 && !isCdOnPlayer) {                                   // Move cd from position to player
         moveArms(pos);
         setTimeout(() => {
-            console.log("play this : ", pos)
             currentCd = pos;
             moveCdToPlayer(cdElement, pos);
             moveArms(5);
@@ -70,17 +57,17 @@ function handleCdClick(pos) {
             }, 1000);
         }, 1000);
     } else if (pos == currentCd && pos !== 5 && isCdOnPlayer) {       // Move cd from player to position
-            moveCdToOriginalPosition(cdElement);
-            moveArms(currentCd);
-            cdElement.classList.add('arm-transition');
-            // Envoie de données au lecteur
-            emit('player.link', { link: null });
-            setTimeout(() => {
-                currentCd = pos;
-                isCdOnPlayer = false;
-                moveArms(5);
-                cdElement.classList.remove('arm-transition');
-            }, 1000);
+        moveCdToOriginalPosition(cdElement);
+        moveArms(currentCd);
+        cdElement.classList.add('arm-transition');
+        // Envoie de données au lecteur
+        emit('player.link', { link: null });
+        setTimeout(() => {
+            currentCd = pos;
+            isCdOnPlayer = false;
+            moveArms(5);
+            cdElement.classList.remove('arm-transition');
+        }, 1000);
     }
 }
 
@@ -104,3 +91,19 @@ export function moveArms(pos) {
     }, 1000); // Remove the class after 1 second
 }
 
+
+// Fonction pour ajouter les écouteurs d'événements
+export function addEventListener() {
+    for (let i = 1; i <= 9; i++) {
+        const cdElement = document.querySelector(`.disc-${i}`);
+        cdElement.addEventListener('click', () => handleCdClickWrapper(i));
+    }
+}
+
+// Fonction pour supprimer les écouteurs d'événements
+export function removeEventListener() {
+    for (let i = 1; i <= 9; i++) {
+        const cdElement = document.querySelector(`.disc-${i}`);
+        cdElement.removeEventListener('click', () => handleCdClickWrapper(i));
+    }
+}
