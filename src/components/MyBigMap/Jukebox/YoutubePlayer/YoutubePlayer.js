@@ -23,8 +23,6 @@ function YoutubePlayer() {
 
     useEventBus('player.link', (data) => {
         setLink(data.link);
-        document.getElementById('iframe-ytb-player').setAttribute('src', data.link);
-
     });
 
 
@@ -35,8 +33,10 @@ function YoutubePlayer() {
         if (link === null) {
             console.log("cacher")
             iframe.classList.remove('show-ytb-player')
+            document.getElementById('iframe-ytb-player').setAttribute('src', null);
             return;
         } else {
+            document.getElementById('iframe-ytb-player').setAttribute('src', link);
             iframe.classList.add('show-ytb-player')
         }
 
@@ -44,7 +44,9 @@ function YoutubePlayer() {
 
     return (
         <div className='youtube-player-div'>
-            <iframe className="music__player hide-ytb-player" id="iframe-ytb-player" src="https://www.youtube.com/embed/tYgZtKuuzOE" title="Zamdane - Affamé #13 : Marseille" allowFullScreen></iframe>
+            <iframe className="music__player hide-ytb-player" id="iframe-ytb-player" src="https://www.youtube.com/embed/tYgZtKuuzOE" title="Zamdane - Affamé #13 : Marseille" allowFullScreen>
+                "echap" pour fermer le lecteur
+            </iframe>
         </div>
     );
 }
