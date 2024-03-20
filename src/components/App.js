@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import MyBigMap from './MyBigMap/MyBigMap';
 import MyLittleMap from "./MyLittleMap/MyLittleMap";
 import Loader from './Loader/Loader'
+import RfidReader from './RfidReader/RfidReader'
 
 function App() {
     console.log("app")
@@ -9,8 +10,8 @@ function App() {
         event.preventDefault();
     });
 
+    // Loading state of bigmap
     const [isLoading, setIsLoading] = useState(true);
-
     const handleLoadingComplete = () => {
         setTimeout(() => {
             setIsLoading(false);
@@ -22,6 +23,7 @@ function App() {
             {isLoading && <Loader />}
             <MyBigMap onLoadingComplete={handleLoadingComplete} />
             <MyLittleMap />
+            {/* <RfidReader /> */}
         </div>
     );
 }

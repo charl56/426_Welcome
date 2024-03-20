@@ -1,31 +1,68 @@
-// React
-import React, { useEffect, useRef, useState } from "react";
-import './YoutubePlayer.css'
-
+import React, { useEffect, useState } from "react";
+import './YoutubePlayer.css';
+import { useEventBus } from "../../../../libs/eventBus";
 
 function YoutubePlayer() {
+    const [link, setLink] = useState(null);
 
-    // const jukeboxRef = useRef(null);        // Init placement of arms
-    // useEffect(() => {
-    //     if (jukeboxRef.current) {
-    //         addEventListener();             // Add events for cds
-    //         moveArms(5);                    // Move to position 1
+    // Hide ytb player when touch "echap" is clicked
+    useEffect(() => {
+        function handleKeyPress(event) {
+            if (event.key === "Escape") {
+                setLink(null);
+            }
+        }
 
-    //         // Cleanup function to remove event listeners
-    //         return () => {
-    //             removeEventListener();      // RemoveEvent for cds
-    //         };
-    //     }
-    // }, []);
+        document.addEventListener("keydown", handleKeyPress);
+        return () => {
+            document.removeEventListener("keydown", handleKeyPress);
+        };
+    }, []);
 
+
+
+    useEventBus('player.link', (data) => {
+        setLink(data.link);
+        document.getElementById('iframe-ytb-player').setAttribute('src', data.link);
+
+    });
+
+
+    useEffect(() => {
+        console.log("link : ", link);
+
+        let iframe = document.getElementsByClassName('youtube-player-div')[0];
+        if (link === null) {
+            console.log("cacher")
+            iframe.classList.remove('show-ytb-player')
+            return;
+        } else {
+            iframe.classList.add('show-ytb-player')
+        }
+
+    }, [link]);
 
     return (
-        // <div ref={jukeboxRef} className='charles-room-div'>
         <div className='youtube-player-div'>
-            <iframe className="music__player music__player--front" src="https://www.youtube.com/embed/sIkP1X-6enY" title="Zamdane - Affamé #13 : Marseille" allowFullScreen></iframe>
+            <iframe className="music__player hide-ytb-player" id="iframe-ytb-player" src="https://www.youtube.com/embed/tYgZtKuuzOE" title="Zamdane - Affamé #13 : Marseille" allowFullScreen></iframe>
         </div>
     );
 }
 
-
 export default YoutubePlayer;
+
+
+
+
+
+// const playerRef = useRef(null); // Init placement of arms
+// useEffect(() => {
+//     if (playerRef.current) {
+//         // addEventListener();             // Add events for cds
+
+//         // Cleanup function to remove event listeners
+//         return () => {
+//             // removeEventListener();      // RemoveEvent for cds
+//         };
+//     }
+// }, []);

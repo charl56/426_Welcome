@@ -1,13 +1,14 @@
 // React
 import React, { useEffect, useRef, useState } from "react";
 import './Jukebox.css'
-import { addEventListener, removeEventListener ,moveArms} from './moveArmsCd'
+import { addEventListener, removeEventListener, moveArms } from './manageMusic'
 import YoutubePlayer from "./YoutubePlayer/YoutubePlayer";
+import { PlayerProvider } from "./YoutubePlayer/PlayerContext";
 // Img
 import zamdane from './images/zamdane.jpg'
 import youvdee from './images/youdee.jpg'
 import luvresval from './images/luvresval.jpg'
-import saturncitizen from './images/saturncitizen.jpg'
+import disiz from './images/disiz.jpg'
 import azur from './images/azur.jpg'
 import bobmarley from './images/bobmarley.jpg'
 import pac from './images/2pac.jpg'
@@ -31,6 +32,7 @@ function Jukebox() {
 
     return (
         <div ref={jukeboxRef} className='charles-room-div'>
+            {/* Jukebox */}
             <div className="jb__box">
                 <div className="jb__disc disc-1">
                     <img src={zamdane} alt='img' className='disc__img' />
@@ -52,7 +54,7 @@ function Jukebox() {
 
                 </div>
                 <div className="jb__disc disc-7">
-                    <img src={saturncitizen} alt='img' className='disc__img' />
+                    <img src={disiz} alt='img' className='disc__img' />
 
                 </div>
                 <div className="jb__disc disc-8">
@@ -64,7 +66,10 @@ function Jukebox() {
             </div>
             <div className="arm arm__horizontal" id="arm-horizontal"></div>
             <div className="arm arm__vertical" id="arm-vertical"></div>
-            {/* <YoutubePlayer /> */}
+            {/* Lecteur YTB */}
+            <PlayerProvider>
+                <YoutubePlayer />
+            </PlayerProvider>           
         </div>
     );
 }

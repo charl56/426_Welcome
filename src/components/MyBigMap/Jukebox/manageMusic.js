@@ -1,15 +1,17 @@
-const armsPositions = {                 // List of positions for cds
-    1: { horizontal: { value: 17 }, vertical: { value: 17 } },
-    2: { horizontal: { value: 17 }, vertical: { value: 60 } },
-    3: { horizontal: { value: 17 }, vertical: { value: 103 } },
-    4: { horizontal: { value: 60 }, vertical: { value: 17 } },
-    5: { horizontal: { value: 60 }, vertical: { value: 60 } },
-    6: { horizontal: { value: 60 }, vertical: { value: 103 } },
-    7: { horizontal: { value: 103 }, vertical: { value: 17 } },
-    8: { horizontal: { value: 103 }, vertical: { value: 60 } },
-    9: { horizontal: { value: 103 }, vertical: { value: 103 } },
-};
+import { emit } from '../../../libs/eventBus';
 
+const armsPositions = {                 // List of positions for cds
+    1: { horizontal: { value: 17 }, vertical: { value: 17 }, link: "https://www.youtube.com/embed/r4WZcP5p0og" },
+    2: { horizontal: { value: 17 }, vertical: { value: 60 }, link: "https://www.youtube.com/embed/ATxu5K9Ye-M" },
+    3: { horizontal: { value: 17 }, vertical: { value: 103 }, link: "https://www.youtube.com/embed/u1LpPFSCMHw" },
+    4: { horizontal: { value: 60 }, vertical: { value: 17 }, link: "https://www.youtube.com/embed/fDjMSiECbgg" },
+    5: { horizontal: { value: 60 }, vertical: { value: 60 }, link: "" },
+    6: { horizontal: { value: 60 }, vertical: { value: 103 }, link: "https://www.youtube.com/embed/1ti2YCFgCoI" },
+    7: { horizontal: { value: 103 }, vertical: { value: 17 }, link: "https://www.youtube.com/embed/WzLZpZCVohI" },
+    8: { horizontal: { value: 103 }, vertical: { value: 60 }, link: "https://www.youtube.com/embed/8GliyDgAGQI" },
+    9: { horizontal: { value: 103 }, vertical: { value: 103 }, link: "https://www.youtube.com/embed/RI4xBNugTp4" },
+};
+<iframe width="1903" height="742" src="https://www.youtube.com/embed/WzLZpZCVohI" title="Disiz - Casino" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
 // Fonction pour ajouter les écouteurs d'événements
@@ -54,10 +56,14 @@ function handleCdClick(pos) {
     if (pos !== 5 && !isCdOnPlayer) {                                   // Move cd from position to player
         moveArms(pos);
         setTimeout(() => {
+            console.log("play this : ", pos)
             currentCd = pos;
             moveCdToPlayer(cdElement, pos);
             moveArms(5);
             cdElement.classList.add('arm-transition');
+            // Envoie de données au lecteur
+            emit('player.link', { link: armsPositions[pos].link });
+
             setTimeout(() => {
                 isCdOnPlayer = true;
                 cdElement.classList.remove('arm-transition');
@@ -67,6 +73,8 @@ function handleCdClick(pos) {
             moveCdToOriginalPosition(cdElement);
             moveArms(currentCd);
             cdElement.classList.add('arm-transition');
+            // Envoie de données au lecteur
+            emit('player.link', { link: null });
             setTimeout(() => {
                 currentCd = pos;
                 isCdOnPlayer = false;
@@ -96,43 +104,3 @@ export function moveArms(pos) {
     }, 1000); // Remove the class after 1 second
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// export function addEventListener() {
-//     document.getElementsByClassName('disc-1')[0].addEventListener('click', () => handleCdClick('1'));
-//     document.getElementsByClassName('disc-2')[0].addEventListener('click', () => handleCdClick('2'));
-//     document.getElementsByClassName('disc-3')[0].addEventListener('click', () => handleCdClick('3'));
-//     document.getElementsByClassName('disc-4')[0].addEventListener('click', () => handleCdClick('4'));
-//     document.getElementsByClassName('disc-5')[0].addEventListener('click', () => handleCdClick('5'));
-//     document.getElementsByClassName('disc-6')[0].addEventListener('click', () => handleCdClick('6'));
-//     document.getElementsByClassName('disc-7')[0].addEventListener('click', () => handleCdClick('7'));
-//     document.getElementsByClassName('disc-8')[0].addEventListener('click', () => handleCdClick('8'));
-//     document.getElementsByClassName('disc-9')[0].addEventListener('click', () => handleCdClick('9'));
-
-// }
-
-// export function removeEventListener() {
-//     document.getElementsByClassName('disc-1')[0].removeEventListener('click', () => handleCdClick('1'));
-//     document.getElementsByClassName('disc-2')[0].removeEventListener('click', () => handleCdClick('2'));
-//     document.getElementsByClassName('disc-3')[0].removeEventListener('click', () => handleCdClick('3'));
-//     document.getElementsByClassName('disc-4')[0].removeEventListener('click', () => handleCdClick('4'));
-//     document.getElementsByClassName('disc-5')[0].removeEventListener('click', () => handleCdClick('5'));
-//     document.getElementsByClassName('disc-6')[0].removeEventListener('click', () => handleCdClick('6'));
-//     document.getElementsByClassName('disc-7')[0].removeEventListener('click', () => handleCdClick('7'));
-//     document.getElementsByClassName('disc-8')[0].removeEventListener('click', () => handleCdClick('8'));
-//     document.getElementsByClassName('disc-9')[0].removeEventListener('click', () => handleCdClick('9'));
-// }

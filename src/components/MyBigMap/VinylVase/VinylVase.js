@@ -1,26 +1,44 @@
 // React
-import React from 'react';
+import React, { useEffect, useRef, useState, useContext } from "react";
 import './VinylVase.css'
+import { VinylPlayer } from './manageMusic'
 
+// Img
 import logo1 from './images/laylow.jpg'
 import logo2 from './images/lomepal.jpg'
 import logo3 from './images/oboy.jpg'
 
-export default function VinylVase() {
+function VinylVase() {
+    const vinylRef = useRef(null);        // Init placement of arms
+
+    useEffect(() => {
+      
+        const vinylPlayer = VinylPlayer();
+
+        if (vinylRef.current) {
+            for (let i = 1; i <= 3; i++) {
+                const vinylElement = document.querySelector(`.vinyl-${i}`);
+                vinylElement.addEventListener('click', () => vinylPlayer.handleVinylClick(i));
+            }
+            // Cleanup function to remove event listeners
+            return () => {
+                for (let i = 1; i <= 3; i++) {
+                    const vinylElement = document.querySelector(`.vinyl-${i}`);
+                    vinylElement.removeEventListener('click', () => vinylPlayer.handleVinylClick(i));
+                }
+            };
+        }
+    }, []);
 
 
     return (
-        <div className='pol-room-div'>
-            <img src={logo1} alt='firstVinyl' className='vinyl vinyl1'/>
-            <img src={logo2} alt='secondVinyl' className='vinyl vinyl2'/>
-            <img src={logo3} alt='thirdVinyl' className='vinyl vinyl3'/>
+        <div ref={vinylRef} className='pol-room-div'>
+            <img src={logo1} alt='firstVinyl' id="laylow" className='vinyl vinyl-1' />
+            <img src={logo2} alt='secondVinyl' id="lomepal" className='vinyl vinyl-2' />
+            <img src={logo3} alt='thirdVinyl' id="oboy" className='vinyl vinyl-3' />
 
-            {/* <iframe width="1519" height="526" src="https://www.youtube.com/embed/1VLSjLJWPRE" title="OBOY - SLS (Clip Officiel)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> */}
-            {/* <iframe width="1519" height="526" src="https://www.youtube.com/embed/abrmqTNHUa0" title="Trajectoire" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> */}
-            {/* <iframe width="1519" height="526" src="https://www.youtube.com/embed/tYgZtKuuzOE" title="UNE HISTOIRE ÉTRANGE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> */}
-            {/* <iframe width="1519" height="526" src="https://www.youtube.com/embed/FEXA3VQAQEs" title="Marathon" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> */}
-            {/* <iframe width="1519" height="526" src="https://www.youtube.com/embed/okbyUVi_Of0" title="Humains (Bonus Track)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> */}
-            {/* <iframe width="1519" height="526" src="https://www.youtube.com/embed/Y4bSBkHTWNg" title="Gusted - Jet Plane" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> */}
         </div>
     );
 }
+
+export default VinylVase;
