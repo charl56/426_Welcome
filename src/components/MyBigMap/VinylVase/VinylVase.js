@@ -1,5 +1,5 @@
 // React
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useRef } from "react";
 import './VinylVase.css'
 import { emit } from "../../../libs/eventBus";
 
@@ -16,38 +16,48 @@ function VinylVase() {
         lomepal: "https://www.youtube.com/embed/okbyUVi_Of0",
         oboy: "https://www.youtube.com/embed/1VLSjLJWPRE"
     };
-        function handleVinylClick(pos) {
-            const artist = document.querySelector(`.vinyl-${pos}`).getAttribute('id');
-            // Envoie de données au lecteur
-            emit('player.link', { link: vinyls[artist] });
+    // Add event click
+    function addEventListener() {
+        for (let i = 1; i <= 3; i++) {
+            console.log("add vinyl")
+            const vinylElement = document.querySelector(`.vinyl-${i}`);
+            vinylElement.addEventListener('click', () => handleVinylClick(i));
         }
-    
+    }
+    // Remove event click
+    function removeEventListener() {
+        for (let i = 1; i <= 3; i++) {
+            console.log("remove vinyl")
+            const vinylElement = document.querySelector(`.vinyl-${i}`);
+            vinylElement.removeEventListener('click', () => handleVinylClick(i));
+        }
+    }
+    function handleVinylClick(pos) {
+        console.log("clique vinyl")
+        const artist = document.querySelector(`.vinyl-${pos}`).getAttribute('id');
+        // Envoie de données au lecteur
+        emit('player.link', { link: vinyls[artist] });
+    }
+
 
     /***** Functions for Vinyl component *****/
     const vinylRef = useRef(null);
     useEffect(() => {
         if (vinylRef.current) {
-            for (let i = 1; i <= 3; i++) {
-                const vinylElement = document.querySelector(`.vinyl-${i}`);
-                vinylElement.addEventListener('click', () => handleVinylClick(i));
-            }
-            // Cleanup function to remove event listeners
+            addEventListener();
+
             return () => {
-                for (let i = 1; i <= 3; i++) {
-                    const vinylElement = document.querySelector(`.vinyl-${i}`);
-                    vinylElement.removeEventListener('click', () => handleVinylClick(i));
-                }
+                removeEventListener();
             };
         }
-    }, []);
+    });
 
 
     return (
         <div ref={vinylRef} className='pol-room-div'>
-            <img src={logo1} alt='firstVinyl' id="laylow" className='vinyl vinyl-1' />
-            <img src={logo2} alt='secondVinyl' id="lomepal" className='vinyl vinyl-2' />
-            <img src={logo3} alt='thirdVinyl' id="oboy" className='vinyl vinyl-3' />
-
+            <img src={logo1} alt='vinyl' id="laylow" className='vinyl__disc vinyl-1' />
+            <img src={logo2} alt='vinyl' id="lomepal" className='vinyl__disc vinyl-2' />
+            <img src={logo3} alt='vinyl' id="oboy" className='vinyl__disc vinyl-3' />
         </div>
     );
 }

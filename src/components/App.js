@@ -15,7 +15,7 @@ function App() {
     const handleLoadingComplete = () => {
         setTimeout(() => {
             setIsLoading(false);
-        }, 10);
+        }, 600);
     };
 
     return (

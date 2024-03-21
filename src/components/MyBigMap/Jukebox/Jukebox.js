@@ -1,5 +1,5 @@
 // React
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import './Jukebox.css'
 import { emit } from "../../../libs/eventBus";
 import YoutubePlayer from "./YoutubePlayer/YoutubePlayer";
@@ -44,6 +44,7 @@ function Jukebox() {
     // Add event click
     function addEventListener() {
         for (let i = 1; i <= 9; i++) {
+            console.log("add JB")
             const cdElement = document.querySelector(`.disc-${i}`);
             cdElement.addEventListener('click', () => handleCdClick(i));
         }
@@ -51,6 +52,7 @@ function Jukebox() {
     // Remove event click
     function removeEventListener() {
         for (let i = 1; i <= 9; i++) {
+            console.log("remove JB")
             const cdElement = document.querySelector(`.disc-${i}`);
             cdElement.removeEventListener('click', () => handleCdClick(i));
         }
@@ -79,6 +81,7 @@ function Jukebox() {
             moveArms(pos);
             setTimeout(() => {
                 currentCd = pos;
+                moveCdToPlayer(cdElement, pos);
                 moveArms(5);
                 cdElement.classList.add('arm-transition');
                 // Envoie de données au lecteur
@@ -105,11 +108,11 @@ function Jukebox() {
     }
     
     /***** Functions for Jukebox component *****/
-    const jukeboxRef = useRef(null);        // Init placement of arms
+    const jukeboxRef = useRef(null);       
     useEffect(() => {
         if (jukeboxRef.current) {
-            addEventListener();
-            moveArms(5);
+            addEventListener();     // Events for cd click
+            moveArms(5);            // Init placement of arms
             return () => {
                 removeEventListener();
             };

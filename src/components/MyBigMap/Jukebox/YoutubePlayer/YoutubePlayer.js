@@ -23,6 +23,7 @@ function YoutubePlayer() {
 
     useEventBus('player.link', (data) => {
         setLink(data.link);
+        console.log("data in ytb player");
     });
 
 
@@ -42,8 +43,8 @@ function YoutubePlayer() {
     return (
         <div className='youtube-player-div'>
             <iframe className="music__player hide-ytb-player" id="iframe-ytb-player" src="https://www.youtube.com/embed/tYgZtKuuzOE" title="Zamdane - Affamé #13 : Marseille" allowFullScreen>
-                "echap" pour fermer le lecteur
             </iframe>
+            <p className="text-ytb-player">"echap" pour fermer le lecteur</p>
         </div>
     );
 }

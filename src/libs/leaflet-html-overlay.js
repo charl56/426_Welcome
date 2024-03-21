@@ -51,7 +51,6 @@ L.HtmlOverlay = L.Layer.extend({
             L.DomUtil.addClass(this._dom, 'leaflet-interactive');
             this.addInteractiveTarget(this._dom);
         }
-
         this.getPane().appendChild(this._dom);
         this._reset();
 
