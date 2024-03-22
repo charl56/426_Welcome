@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Judson&display=swap");
+
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+
+body {
+  margin: 0;
+  top: 0;
+  left: 0;
+  max-width: 100vw;
+  /* dvh : dynamic, svh : small, lvh : large */
+  min-height: 100svh;
+  overflow-x: hidden;
+  position: relative;
+  font-family: "Judson", serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: rgb(221, 221, 221);
+}
+
+@media (min-width: 40em) {
+  body {
+    font-size: 2rem;
+  }
+}
+
+
+/* Surlignage du texte */
+::selection {
+  color: #7eb3e8;
+}
+
+::-moz-selection {
+  color: #2c3e50;
+}
+
+
+.map__big--screen, .loader--div {
+  display: block;
+  visibility: visible;
+}
+
+.map__little--screen {
+  display: none;
+  visibility: hidden;
+}
+
+@media (max-width: 650px) {
+  .map__big--screen{
+    display: none;
+    visibility: hidden;
+  }
+
+  .map__little--screen {
+    display: block;
+    visibility: visible;
+  }
+}
