@@ -15,8 +15,8 @@ RUN npm install
 # Copy everything else for build
 COPY config/ ./config
 COPY controllers/ ./controllers
-# COPY middleware/ ./middleware
-# COPY models/ ./models
+COPY middleware/ ./middleware
+COPY models/ ./models
 COPY routes/ ./routes
 COPY app.js ./
 COPY server.js ./
