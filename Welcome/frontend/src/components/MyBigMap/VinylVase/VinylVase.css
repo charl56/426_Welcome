@@ -1,0 +1,32 @@
+.pol-room-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.vinyl__disc {
+    position: absolute;
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    transition: transform  0.5s ease-out; /* Smooth transition */
+
+}
+
+.vinyl__disc:hover {
+    cursor: pointer;
+    animation: rotating 5s linear infinite forwards;
+}@keyframes rotating {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.vinyl-2{
+    scale: 0.8;
+}.vinyl-3{
+    scale: 0.6;
+}

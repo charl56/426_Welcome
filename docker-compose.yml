@@ -1,0 +1,88 @@
+########## EXAMPLE FROM ANOTHER PROJECT ##########
+########## EXAMPLE FROM ANOTHER PROJECT ##########
+########## EXAMPLE FROM ANOTHER PROJECT ##########
+########## EXAMPLE FROM ANOTHER PROJECT ##########
+
+version: '3.8'
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: ../frontend # Lieu du dossier 'frontend' dans le projet
+      dockerfile: ./Dockerfile # Lieu du dockerfile, par rapport au context
+      args:
+        # Permet au front d'avoir les adresses ip du front et du back
+        VITE_FRONTEND_URL: https://innov-alc.angersloirecampus.fr/
+        VITE_BACKEND_URL: https://innov-alc.angersloirecampus.fr/api
+    image: app-alc/vuejs:frontend
+    restart: always
+    ports:
+      - "8085:80"
+    depends_on:
+      - backend
+    networks:
+      - front-network
+
+  backend:
+    container_name: backend
+    build:
+      context: ../backend # Lieu du dossier 'backend' dans le projet
+      dockerfile: ./Dockerfile # Lieu du Dockerfile, par rapport au contextdocke  
+    image: app-alc/nodejs:backend
+    ports:
+      - "3005:3005"
+    environment:
+      # Permet au back d'avoir les logs de connexion a la db, et adresse du front
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=
+      - DB_DB=app_alc
+      - FRONT_ADRESS=https://innov-alc.angersloirecampus.fr
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - back-network
+      - front-network
+    volumes:
+      - uploads:/app/public/uploads
+
+  db:
+    image: mariadb:10.7
+    restart: always
+    container_name: db
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_DATABASE=app_alc
+
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - back-network
+
+networks:
+  # Reseaux separes 
+  back-network:
+    driver: bridge
+    ipam:
+      driver: default
+  front-network:
+    driver: bridge
+    ipam:
+      driver: default
+
+volumes:
+  db-data:
+    # Base de donnees
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /srv/app-alc/db-data
+  uploads:
+    # Dossier qui contient les photos
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /srv/app-alc/public/uploads/

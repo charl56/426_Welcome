@@ -6,7 +6,6 @@ import $ from 'jquery';
 import './MyBigMap.css';
 import VinylVase from './VinylVase/VinylVase'
 import Jukebox from './Jukebox/Jukebox'
-import RfidReader from "./RfidReader/RfidReader";
 
 const MyBigMap = ({ onLoadingComplete }) => {
     const mapRef = useRef();
@@ -52,7 +51,6 @@ const MyBigMap = ({ onLoadingComplete }) => {
 
             $('.groupe1').htmlOverlay().addTo(map);
             $('.groupe2').htmlOverlay().addTo(map);
-            $('.groupe3').htmlOverlay().addTo(map);
             map.setView(initialCoordinates, initialZoom);
         }
 
@@ -73,9 +71,6 @@ const MyBigMap = ({ onLoadingComplete }) => {
             </div>
             <div className="groupe2" data-pos="6.05, 4.2">
                 <Jukebox />
-            </div>
-            <div className="groupe3" data-pos="11, 1">
-                <RfidReader />
             </div>
         </div>
     );

@@ -40,6 +40,7 @@ function Jukebox() {
     // Fonction pour ramener un CD à sa place d'origine
     function moveCdToOriginalPosition(cdElement) {
         cdElement.style.transform = 'translate(0, 0)';
+        cdElement.classList.remove('disc__rotate');
     }
     // Add event click
     function addEventListener() {

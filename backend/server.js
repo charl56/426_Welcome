@@ -1,45 +1,54 @@
-const express = require('express');
-const crypto = require('crypto');
+const http = require('http');
+const app = require('./app');
 
-const app = express();
-app.use(express.json());
+// Vérifie que le port voulu est disponible
+const normalizePort = val => {
+    const port = parseInt(val, 10);
 
-const secretKey = Buffer.from([0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10]);
-const plaintext = 'studi0426';
-const users = {
-    'identifiant1': 'chaîneAléatoire1',
-    'identifiant2': 'chaîneAléatoire2',
-    // Ajoutez d'autres identifiants et chaînes aléatoires ici
+    if (isNaN(port)) {
+        return val;
+    }
+    if (port >= 0) {
+        return port;
+    }
+    return false;
 };
 
-app.post('/api/authenticate', (req, res) => {
-    const { encryptedData, serialNumber } = req.body;
-
-    const decipher = crypto.createDecipheriv('aes-128-ecb', secretKey, '');
-    let decrypted = decipher.update(Buffer.from(encryptedData));
-    decrypted = Buffer.concat([decrypted, decipher.final()]);
-
-    const decryptedText = decrypted.toString().trim();
-
-    if (decryptedText === plaintext) {
-        res.json({ authenticated: true });
-    } else {
-        res.json({ authenticated: false });
+const port = normalizePort('3005');
+app.set('port', port);
+// Cherche les différentes erreurs et les gère de manière appropriée 
+// Elle est ensuite enregistrée dans le serveur 
+const errorHandler = error => {
+    if (error.syscall !== 'listen') {
+        throw error;
     }
-});
-
-
-app.post('/authenticate', (req, res) => {
-    const { identifier, rfidData } = req.body;
-    if (users[identifier] && users[identifier] === rfidData) {
-        res.send({ success: true, message: "Authentification réussie" });
-    } else {
-        res.send({ success: false, message: "Échec de l'authentification" });
+    const address = server.address();
+    const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges.');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use.');
+            process.exit(1);
+            break;
+        case 'ECONNREFUSED':
+            console.error(bind + ' connexion refused');
+            process.exit(1);
+            break;
+        default:
+            throw error;
     }
+};
+
+const server = http.createServer(app);
+
+server.on('error', errorHandler);
+server.on('listening', () => {
+    const address = server.address();
+    const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
+    console.log('Listening on port : ' + bind);
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
-
+server.listen(port);

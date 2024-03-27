@@ -1,0 +1,38 @@
+.read-read-div{
+    width: 150px;
+    height: auto;
+    background-color: rgba(211, 211, 211, 0.545);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center
+    
+}
+
+.read-rfid-btn{
+    width: auto;
+    padding: 3px 10px;
+    background-color: rgba(179, 176, 176, 0.545);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+}.read-rfid-btn:hover{
+    background-color: rgba(179, 176, 176, 0.8);
+    cursor: pointer;
+}
+
+.read-rfid-text-warning{
+    margin: 0;
+    font-size: smaller;
+    text-decoration: underline;
+}.read-rfid-text-test{
+    margin: 0;
+    font-size: smaller;
+    font-weight: bold;
+}
+.read-rfid-text-error-nfc{
+    margin: 0;
+    color: red;
+    font-size: smaller;
+}

@@ -1,0 +1,30 @@
+.map {
+    /* Ensure the map takes up the full size of its container */
+
+}
+
+.leaflet-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    height: 100lvh;
+    width: 100vw;
+    /* margin: 10vh 10vw; */
+    /* background-color: rgb(241, 122, 122); */
+    background-color: white;
+}
+
+.groupe1 {
+    /* width: 60px; 
+    height: auto; */
+}
+
+.groupe2 {}
+
+
+.bloc {
+    /* Styles for each block */
+}
+
+/* ... other styles ... */

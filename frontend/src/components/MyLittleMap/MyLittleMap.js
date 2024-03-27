@@ -1,37 +1,41 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Component , useEffect, useRef, useState } from "react";
 // CSS
 import './MyLittleMap.css';
 // Components
+import RfidReader from "./RfidReader/RfidReader";
 
-const MyLittleMap = React.memo(() => {
+class MyLittleMap extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            // Initialisation de l'état local
+        };
+    }
 
-    const [selectedCd, setSelectedCd] = useState(null);
+    componentDidMount() {
+        // Logique à exécuter après le rendu initial
+    }
 
-    useEffect(() => {
-        if (selectedCd !== null) {
-            // Move the horizontal arm to cross over the selected CD
-            const horizontalArm = document.getElementById('arm-horizontal');
-            horizontalArm.style.top = `${selectedCd.offsetTop + selectedCd.offsetHeight / 2}px`;
+    componentDidUpdate(prevProps, prevState) {
+        // Logique à exécuter après une mise à jour de props ou d'état
+    }
 
-            // Move the vertical arm to cross over the selected CD
-            const verticalArm = document.getElementById('arm-vertical');
-            verticalArm.style.left = `${selectedCd.offsetLeft + selectedCd.offsetWidth / 2}px`;
-        }
+    componentWillUnmount() {
+        // Nettoyage des ressources lors de la suppression du composant
+    }
 
-    }, [selectedCd]);
-
-    const handleCdClick = (cd) => {
-        setSelectedCd(cd);
-    };
-
-
-    return (
-        <div className="map__little--screen">
-            <div className="jb__disc disc-1" onClick={() => handleCdClick(document.querySelector('.disc-1'))}>
-                ouai le bouton ici
+    render() {
+        return (
+            <div className="map__little--screen">
+                <div className="map__little__div--title">
+                    <p className="map__little__title">Studi0426</p>
+                </div>
+                <div className="map__little__div--rfid">
+                    <RfidReader />
+                </div>
             </div>
-        </div>
-    );
-})
+        );
+    }
+}
 
 export default MyLittleMap;
