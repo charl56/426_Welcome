@@ -19,7 +19,7 @@ exports.login = (req, res) => {
         }
 
         // Decrypt token 
-        bcrypt.compare(req.body.password, user.password).then(async valid => {
+        bcrypt.compare(password, user.password).then(async valid => {
             if (!valid) {     // User existe mais mauvais password
                 res.status(401).json({ message: 'User or password incorrect' })
             } else {

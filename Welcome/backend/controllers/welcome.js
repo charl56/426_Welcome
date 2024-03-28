@@ -1,24 +1,40 @@
 // Gestion de la table qui contient la phrase de présentation
 // const WelcomePhrase = require('../models/WelcomePhrase')
 // const auth = require('../middleware/auth');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const users = require('../data/users');
+// List of tokens
+let tokens = [];
 
 
-exports.editPhrase = async (req, res, next) => {
+exports.login = (req, res) => {
     try {
-        const token = req.headers.authorization.split(' ')[1];  // Récupération du token
-        const role = await auth(token);                     // Décodage du role dans le token
-        if (role == 'Admin') {                              // En fonction du rôle : edit faq ou non       
-            await WelcomePhrase.update(req.body, {where: { id:req.params.id }})
-                .then(() => res.status(200).json({ message: 'Objet modifié'}))
-                .catch(error => res.status(404).json({ error }));
-        } else {
-            res.status(401).json({ message: "Unauthorized" });
-        }
-    } catch (error) {
-        res.status(400).json({ error });
-    }
-}
+        const { username, password } = req.body; // Extraire le nom d'utilisateur et le mot de passe de la demande
 
-exports.getAllPhrases = (req, res, next) => {
-    res.status(200).json("Content")
+        const user = users.find(user => user.username === username);
+
+        if (!user) { 
+            return res.status(401).json({ message: "User or password incorrect" });
+        }
+
+        // Decrypt token 
+        bcrypt.compare(password, user.password).then(async valid => {
+            if (!valid) {     // User existe mais mauvais password
+                res.status(401).json({ message: 'User or password incorrect' })
+            } else {
+
+                // Create token for futur request
+                const token = jwt.sign(
+                    { token: req.body.rfid },
+                    'A$rSor3pTti3!CP5@CXBLXfaG$asMYxC6AHY?e6!',
+                    { expiresIn: '1h' }
+                )
+                tokens.push(token)
+                res.status(200).json({ token: token })
+            }
+        })
+    } catch (error) {
+        res.status(501).json({ error })
+    }
 }

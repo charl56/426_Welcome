@@ -18,8 +18,7 @@ COPY src/ ./src
 COPY public/ ./public
 
 # Args
-ARG VITE_FRONT_URI=$VITE_FRONT_URI 
-ARG VITE_FRONT_URL=$VITE_FRONT_URL
+ARG REACT_APP_PROD_URL=$REACT_APP_PROD_URL 
 
 # build app for production with minification
 RUN yarn build

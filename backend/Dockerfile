@@ -17,6 +17,7 @@ COPY config/ ./config
 COPY controllers/ ./controllers
 COPY middleware/ ./middleware
 COPY models/ ./models
+COPY data/ ./data
 COPY routes/ ./routes
 COPY app.js ./
 COPY server.js ./

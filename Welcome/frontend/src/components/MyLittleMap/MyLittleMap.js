@@ -1,4 +1,4 @@
-import React, { Component , useEffect, useRef, useState } from "react";
+import React, { Component  } from "react";
 // CSS
 import './MyLittleMap.css';
 // Components

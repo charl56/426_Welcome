@@ -12,8 +12,7 @@ services:
       dockerfile: ./Dockerfile # Lieu du dockerfile, par rapport au context
       args:
         # Permet au front d'avoir les adresses ip du front et du back
-        VITE_FRONTEND_URL: https://innov-alc.angersloirecampus.fr/
-        VITE_BACKEND_URL: https://innov-alc.angersloirecampus.fr/api
+        REACT_APP_PROD_URL: https://studi0426.com/api/
     image: app-alc/vuejs:frontend
     restart: always
     ports:
