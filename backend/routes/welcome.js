@@ -4,7 +4,6 @@ const router = express.Router();
 // Controler Sections
 const welcomeCtrl = require('../controllers/welcome')
 // Routes
-// router.put('/:id', welcomePhraseCtrl.editPhrase);          
-router.get('/', welcomeCtrl.getAllPhrases);          
+router.post('/login', welcomeCtrl.login);          
 // Export 
 module.exports = router;

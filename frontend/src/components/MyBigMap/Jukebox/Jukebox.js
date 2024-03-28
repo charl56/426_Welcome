@@ -91,7 +91,7 @@ function Jukebox() {
                     cdElement.classList.remove('arm-transition');
                 }, 1000);
             }, 1000);
-        } else if (pos == currentCd && pos !== 5 && isCdOnPlayer) {       // Move cd from player to position
+        } else if (pos === currentCd && pos !== 5 && isCdOnPlayer) {       // Move cd from player to position
             moveCdToOriginalPosition(cdElement);
             moveArms(currentCd);
             cdElement.classList.add('arm-transition');

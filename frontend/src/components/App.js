@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import MyBigMap from './MyBigMap/MyBigMap';
 import MyLittleMap from "./MyLittleMap/MyLittleMap";
 import Loader from './Loader/Loader'
+import SecretComponent from "./MyLittleMap/SecretComponent/SecretComponent";
+import { AuthProvider } from "../service/AuthContext";
+
 
 function App() {
     console.log("app")
@@ -21,7 +24,11 @@ function App() {
         <div className="App">
             {isLoading && <Loader />}
             <MyBigMap onLoadingComplete={handleLoadingComplete} />
-            <MyLittleMap />
+
+            <AuthProvider>
+                <MyLittleMap />
+                <SecretComponent />
+            </AuthProvider>
         </div>
     );
 }
