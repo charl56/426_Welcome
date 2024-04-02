@@ -5,5 +5,6 @@ const router = express.Router();
 const welcomeCtrl = require('../controllers/welcome')
 // Routes
 router.post('/login', welcomeCtrl.login);          
+router.get('/check', welcomeCtrl.check);          
 // Export 
 module.exports = router;

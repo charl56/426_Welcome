@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import './RfidReader.css';
 import axios from 'axios';
-// import { Cookies } from 'react-cookie';
 import { useAuth } from '../../../service/AuthContext';
 
 const RfidReader = () => {
     const [data, setData] = useState("");
     const [scanning, setScanning] = useState(false);
     const [username, setUsername] = useState("");
-    // const cookies = new Cookies(); // Initialize Cookies instance
     const { setToken } = useAuth();
 
     const startScan = async () => {
         setToken(null)
+
         if (!username) {
-            setData("Le champ user ne doit pas être vide");
+            setData("Le champ ne doit pas être vide");
             return;
         }
 
@@ -38,7 +37,6 @@ const RfidReader = () => {
                         });
 
                         if (response.status == 200) {
-                            // cookies.set('token', response.data.token, { path: '/' }); // Use Cookies instance to set cookie
                             setToken(response.data.token);
                             setData("Welcome !");
                         } else {

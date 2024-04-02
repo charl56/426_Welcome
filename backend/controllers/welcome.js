@@ -38,3 +38,22 @@ exports.login = (req, res) => {
         res.status(501).json({ error })
     }
 }
+
+exports.check = (req, res) => {
+    try {
+        const tokenFromHeader = req.headers.authorization; // Récupérer le token de l'en-tête
+
+        if (!tokenFromHeader) {
+            return res.status(401).json({ message: "Token not provided" });
+        }
+        // Vérifier si le token se trouve dans la liste tokens
+        const tokenExists = tokens.includes(tokenFromHeader.replace('Bearer ', ''));
+        if (tokenExists) {
+            res.status(200).json({ message: ""});
+        } else {
+            res.status(401).json({ message: ""});
+        }
+    } catch (error) {
+        res.status(501).json({ error })
+    }
+}
