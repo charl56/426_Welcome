@@ -1,6 +1,7 @@
 import React from 'react';
-import { useAuth } from '../../../service/AuthContext';
 import './SecretComponent.css';
+import background from './images/background.jpg'
+import { useAuth } from '../../../service/AuthContext';
 
 const SecretComponent = () => {
     const { token, setToken } = useAuth();
@@ -10,13 +11,15 @@ const SecretComponent = () => {
     };
 
     if (!token) {
-        return <div>You must be logged in to view this content.</div>;
+        return
     }
 
     return (
         <div className='secret-component-div'>
-            <h2>Protected Component</h2>
-            <button onClick={handleLogout}>Logout</button>
+            <button className='secret-component-logout' onClick={handleLogout}>Logout</button>
+            <h2 className='secret-component-title'>Bienvenue</h2>
+            <img src={background} alt='img' className='back__img'/>
+
         </div>
     );
 };

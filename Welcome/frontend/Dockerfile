@@ -8,7 +8,6 @@ WORKDIR /app
 
 # Copy project files and restore as distinct layers
 COPY package.json ./
-# COPY package-lock.json ./
 
 # install project dependencies
 RUN yarn install

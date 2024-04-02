@@ -25,10 +25,10 @@ body {
   min-height: 100svh;
   overflow-x: hidden;
   position: relative;
-  font-family: "Judson", serif;
+  font-family: monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(221, 221, 221);
+  background-color: white;
 }
 
 @media (min-width: 40em) {

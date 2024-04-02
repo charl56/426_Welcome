@@ -1,8 +1,10 @@
-import React, { Component  } from "react";
+import React, { Component } from "react";
 // CSS
 import './MyLittleMap.css';
 // Components
 import RfidReader from "./RfidReader/RfidReader";
+import SecretComponent from "./SecretComponent/SecretComponent";
+import { AuthProvider } from "../../service/AuthContext";
 
 class MyLittleMap extends Component {
     constructor(props) {
@@ -31,9 +33,12 @@ class MyLittleMap extends Component {
                     <p className="map__little__title">Studi0426</p>
                 </div>
                 <div className="map__little__div--rfid">
-                    <RfidReader />
+                    <AuthProvider>
+                        <SecretComponent />
+                        <RfidReader />
+                    </AuthProvider>
                 </div>
-            </div>
+            </div >
         );
     }
 }

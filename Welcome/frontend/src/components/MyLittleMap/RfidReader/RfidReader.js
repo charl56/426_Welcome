@@ -12,7 +12,7 @@ const RfidReader = () => {
     const { setToken } = useAuth();
 
     const startScan = async () => {
-
+        setToken(null)
         if (!username) {
             setData("Le champ user ne doit pas être vide");
             return;
