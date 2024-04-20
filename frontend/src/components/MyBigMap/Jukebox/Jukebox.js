@@ -84,7 +84,7 @@ function Jukebox() {
                 moveArms(5);
                 cdElement.classList.add('arm-transition');
                 // Envoie de données au lecteur
-                emit('player.link', { link: armsPositions[pos].link });
+                emit('player.link', { link: armsPositions[pos].link, from: "jukebox" });
 
                 setTimeout(() => {
                     isCdOnPlayer = true;
@@ -96,7 +96,7 @@ function Jukebox() {
             moveArms(currentCd);
             cdElement.classList.add('arm-transition');
             // Envoie de données au lecteur
-            emit('player.link', { link: null });
+            emit('player.link', { link: null, from: null });
             setTimeout(() => {
                 currentCd = pos;
                 isCdOnPlayer = false;

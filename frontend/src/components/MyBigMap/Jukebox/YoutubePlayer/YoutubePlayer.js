@@ -6,10 +6,18 @@ function YoutubePlayer() {
 
     /***** Datas for YtbPlayer component *****/
     const [link, setLink] = useState(null);
+    const [isCdOnPlayer, setIsCdOnPlayer] = useState(null);
 
     function handleKeyPress(event) {
         if (event.key === "Escape") {
             setLink(null);
+            if(isCdOnPlayer){
+                console.log("remove le ouai")
+            } else {
+                console.log("rien")
+            }
+            // Here i would like to get the value of currentCd and isCdOnPlayer, from Jukebox component
+            // If isCdOnPlayer is true, i want to execut the function moveCdToOriginalPosition(currentCd) in the component Jukebox
         }
     }
     function setLinkNull() {
@@ -24,7 +32,9 @@ function YoutubePlayer() {
         document.querySelector(".text-ytb-player").removeEventListener('click', setLinkNull);
     }
     useEventBus('player.link', (data) => {
-        setLink(data.link);
+        console.log(data.from)
+        setLink(data.link);                                                             // Set new link on player
+        data.from === "jukebox" ? setIsCdOnPlayer(true) : setIsCdOnPlayer(false);       // Know if cd on player, to auto remove cd
     });
 
     /***** Functions for YtbPlayer component *****/
