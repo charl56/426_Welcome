@@ -6,18 +6,22 @@ function YoutubePlayer() {
 
     /***** Datas for YtbPlayer component *****/
     const [link, setLink] = useState(null);
-    const [isCdOnPlayer, setIsCdOnPlayer] = useState(null);
+    const [isCdOnPlayer, setIsCdOnPlayer] = useState(false);
+    const [cdPos, setCdPos] = useState(0);
 
     function handleKeyPress(event) {
         if (event.key === "Escape") {
+            console.log(isCdOnPlayer)
             setLink(null);
-            if(isCdOnPlayer){
-                console.log("remove le ouai")
+            if (isCdOnPlayer) {
+                const cdElement = document.querySelector(`.disc-${cdPos}`).children[0];
+                cdElement.style.transform = 'translate(0, 0)';
+                cdElement.classList.remove('disc__rotate');
+                setIsCdOnPlayer(false);     // Remove cd so update value
+                console.log(isCdOnPlayer)
             } else {
                 console.log("rien")
             }
-            // Here i would like to get the value of currentCd and isCdOnPlayer, from Jukebox component
-            // If isCdOnPlayer is true, i want to execut the function moveCdToOriginalPosition(currentCd) in the component Jukebox
         }
     }
     function setLinkNull() {
@@ -32,9 +36,16 @@ function YoutubePlayer() {
         document.querySelector(".text-ytb-player").removeEventListener('click', setLinkNull);
     }
     useEventBus('player.link', (data) => {
-        console.log(data.from)
         setLink(data.link);                                                             // Set new link on player
-        data.from === "jukebox" ? setIsCdOnPlayer(true) : setIsCdOnPlayer(false);       // Know if cd on player, to auto remove cd
+        console.log(data.pos !== null)
+        if (data.pos !== null) {
+            setIsCdOnPlayer(true);
+            setCdPos(data.pos);
+            console.log(isCdOnPlayer)
+        } else {
+            console.log("fals ele ")
+            setIsCdOnPlayer(false);
+        }
     });
 
     /***** Functions for YtbPlayer component *****/

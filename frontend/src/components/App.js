@@ -5,7 +5,6 @@ import Loader from './Loader/Loader'
 
 
 function App() {
-    console.log("app")
     document.addEventListener('contextmenu', event => {
         event.preventDefault();
     });

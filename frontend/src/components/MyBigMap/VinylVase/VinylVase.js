@@ -33,7 +33,7 @@ function VinylVase() {
     function handleVinylClick(pos) {
         const artist = document.querySelector(`.vinyl-${pos}`).getAttribute('id');
         // Envoie de données au lecteur
-        emit('player.link', { link: vinyls[artist], from: "vinyl" });
+        emit('player.link', { link: vinyls[artist], pos: null });
     }
 
 

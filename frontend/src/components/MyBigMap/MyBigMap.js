@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import '../../libs/leaflet-html-overlay'
 import 'leaflet/dist/leaflet.css';
 import L from "leaflet";
@@ -6,9 +6,11 @@ import $ from 'jquery';
 import './MyBigMap.css';
 import VinylVase from './VinylVase/VinylVase'
 import Jukebox from './Jukebox/Jukebox'
+import Minimap from './Minimap/Minimap';
 
 const MyBigMap = ({ onLoadingComplete }) => {
     const mapRef = useRef();
+    const [mapMini, setMapMini] = useState(null);
 
     useEffect(() => {
         if (document.getElementById('map').childElementCount === 0) {
@@ -36,22 +38,19 @@ const MyBigMap = ({ onLoadingComplete }) => {
             });
 
 
-            // map.on('load', () => {
-            //     console.log("load map")
-            //     setIsMapLoaded(true);
-            // });
+            map.on('load', () => {
+            });
 
             // Add custom image as a background layer.
             const imagePath = require('../../assets/CACAPOUSSE-01.png');
             L.imageOverlay(imagePath, imageBounds).addTo(map);
 
-            // const imageSvg = require('../../assets/APP426.svg');  // Replace this with the correct path to your image.
-            // L.svgOverlay(imageSvg, imageBounds).addTo(map);
-
-
+            // Init projects on map, with position
             $('.groupe1').htmlOverlay().addTo(map);
             $('.groupe2').htmlOverlay().addTo(map);
             map.setView(initialCoordinates, initialZoom);
+
+            setMapMini(map);
         }
 
         return () => {
@@ -65,6 +64,7 @@ const MyBigMap = ({ onLoadingComplete }) => {
     return (
         <div className="map__big--screen">
             <div id="map"></div>
+            <Minimap map={mapMini} />
             {/* posY, poxX */}
             <div className="groupe1" data-pos="5.7, 5.4">
                 <VinylVase />
