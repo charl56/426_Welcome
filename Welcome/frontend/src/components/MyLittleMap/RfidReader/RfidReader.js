@@ -12,46 +12,60 @@ const RfidReader = () => {
     const startScan = async () => {
         setToken(null)
 
-        if (!username) {
-            setData("Le champ ne doit pas être vide");
-            return;
-        }
 
-        if ("NDEFReader" in window) {
-            const ndef = new window.NDEFReader();
-            if (scanning) {
-                setScanning(false);
-                ndef.clear();
-            } else {
-                try {
-                    await ndef.scan();
-                    setScanning(true);
-                    ndef.onreading = async (event) => {
-                        const decoder = new TextDecoder("utf-8");
-                        const data = decoder.decode(event.message.records[0].data);
-
-                        const url = (process.env.NODE_ENV === 'production') ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL;
-                        const response = await axios.post(url + 'login', {
-                            "username": username,
-                            "password": data
-                        });
-
-                        if (response.status == 200) {
-                            setToken(response.data.token);
-                            setData("Welcome !");
-                        } else {
-                            setData("Error login");
-                        }
-                    };
-                } catch (error) {
-                    console.log(error);
-                    setData("NFC error during scanning.");
-                }
-            }
+        const url = (process.env.NODE_ENV === 'production') ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL;
+        const response = await axios.post(url + 'login', {
+            "username": "user1",
+            "password": "password1"
+        });
+        if (response.status == 200) {
+            setToken(response.data.token);
+            setData("Welcome !");
         } else {
-            console.log("nfc not available");
-            setData("NFC scanning is not supported in your browser.");
+            setData("Error login");
         }
+
+
+        // if (!username) {
+        //     setData("Le champ ne doit pas être vide");
+        //     return;
+        // }
+
+        // if ("NDEFReader" in window) {
+        //     const ndef = new window.NDEFReader();
+        //     if (scanning) {
+        //         setScanning(false);
+        //         ndef.clear();
+        //     } else {
+        //         try {
+        //             await ndef.scan();
+        //             setScanning(true);
+        //             ndef.onreading = async (event) => {
+        //                 const decoder = new TextDecoder("utf-8");
+        //                 const data = decoder.decode(event.message.records[0].data);
+
+        //                 const url = (process.env.NODE_ENV === 'production') ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL;
+        //                 const response = await axios.post(url + 'login', {
+        //                     "username": username,
+        //                     "password": data
+        //                 });
+
+        //                 if (response.status == 200) {
+        //                     setToken(response.data.token);
+        //                     setData("Welcome !");
+        //                 } else {
+        //                     setData("Error login");
+        //                 }
+        //             };
+        //         } catch (error) {
+        //             console.log(error);
+        //             setData("NFC error during scanning.");
+        //         }
+        //     }
+        // } else {
+        //     console.log("nfc not available");
+        //     setData("NFC scanning is not supported in your browser.");
+        // }
     };
 
     const handleChange = (event) => {

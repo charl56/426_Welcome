@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 // CSS
 import './MyLittleMap.css';
+import background from './images/background.jpg';
 // Components
 import RfidReader from "./RfidReader/RfidReader";
 import SecretComponent from "./SecretComponent/SecretComponent";
@@ -31,6 +32,7 @@ class MyLittleMap extends Component {
             <div className="map__little--screen">
                 <div className="map__little__div--title">
                     <p className="map__little__title">Studi0426</p>
+                    <img src={background} alt='img' className='map__little--back__img' />
                 </div>
                 <div className="map__little__div--rfid">
                     <AuthProvider>

@@ -9,6 +9,7 @@ const SecretComponent = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const handleLogout = () => {
+        console.log("logout")
         setToken(null);
     };
 
